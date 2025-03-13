@@ -79,19 +79,25 @@ const SubjectPage = () => {
         className="mb-8"
       >
         <h2 className="text-2xl font-bold mb-4">Topics</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {subject.topics.map((topic, index) => (
-            <div 
-              key={index} 
-              className="edu-card flex items-center p-4"
-            >
-              <div className="p-2 rounded-lg bg-edu-blue/10 mr-3">
-                <Book className="w-5 h-5 text-edu-blue" />
+        {subject.topics && subject.topics.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {subject.topics.map((topic, index) => (
+              <div 
+                key={index} 
+                className="edu-card flex items-center p-4"
+              >
+                <div className="p-2 rounded-lg bg-edu-blue/10 mr-3">
+                  <Book className="w-5 h-5 text-edu-blue" />
+                </div>
+                <span className="font-medium">{topic}</span>
               </div>
-              <span className="font-medium">{topic}</span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="edu-card p-6 text-center">
+            <p className="text-gray-600">No topics available for this subject yet.</p>
+          </div>
+        )}
       </motion.section>
       
       <motion.section
