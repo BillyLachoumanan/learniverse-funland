@@ -1,10 +1,11 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 195 100% 97%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -13,16 +14,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 185 70% 50%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 47 100% 70%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 24 100% 70%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -32,22 +33,15 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -96,6 +90,63 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-edu-blue/50 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-edu-blue;
+  }
+}
+
+@layer components {
+  .edu-card {
+    @apply bg-white rounded-2xl shadow-edu-card p-6 transition-all duration-300 hover:shadow-lg;
+  }
+
+  .edu-button {
+    @apply bg-edu-blue text-white font-medium py-3 px-6 rounded-full shadow-edu-button transition-all duration-300 hover:bg-edu-blue/90 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-edu-blue/50;
+  }
+
+  .edu-button-secondary {
+    @apply bg-edu-yellow text-foreground font-medium py-3 px-6 rounded-full shadow-edu-button transition-all duration-300 hover:bg-edu-yellow/90 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-edu-yellow/50;
+  }
+
+  .subject-card {
+    @apply edu-card overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-[1.02];
+  }
+
+  .badge {
+    @apply inline-flex items-center justify-center rounded-full px-3 py-1 text-sm font-medium transition-colors;
+  }
+
+  .badge-primary {
+    @apply bg-edu-blue/20 text-foreground;
+  }
+
+  .badge-secondary {
+    @apply bg-edu-yellow/20 text-foreground;
+  }
+
+  .edu-input {
+    @apply rounded-xl border-2 border-edu-blue/20 px-4 py-3 focus:border-edu-blue focus:outline-none focus:ring-1 focus:ring-edu-blue/50 w-full transition-all duration-200;
+  }
+
+  /* Page transition container */
+  .page-transition {
+    @apply animate-page-transition-in;
   }
 }
