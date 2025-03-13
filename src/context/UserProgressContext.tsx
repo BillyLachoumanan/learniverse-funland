@@ -1,250 +1,286 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// Define types for our context
-type Subject = {
-  id: string;
-  name: string;
+// Subject progress tracking
+interface SubjectProgress {
   completed: number;
   total: number;
-};
+}
 
-type Badge = {
+interface SubjectsProgress {
+  [key: string]: SubjectProgress;
+}
+
+// Quiz completion tracking
+interface CompletedQuiz {
+  subjectId: string;
+  quizId: string;
+  timestamp: number;
+  score?: number;
+}
+
+// Learning materials tracking
+interface CompletedMaterial {
+  subjectId: string;
+  materialTitle: string;
+  timestamp: number;
+}
+
+// Badges
+interface Badge {
   id: string;
   name: string;
-  icon: string;
   description: string;
-  earned: boolean;
-  earnedAt?: Date;
-};
+  icon: string;
+  earnedAt?: number;
+}
 
-type UserProgressContextType = {
-  points: number;
-  level: number;
+export interface UserProgressContextType {
+  subjects: SubjectsProgress;
+  completedQuizzes: CompletedQuiz[];
+  completedMaterials: CompletedMaterial[];
   badges: Badge[];
-  subjects: Record<string, Subject>;
-  addPoints: (amount: number) => void;
-  completeActivity: (subjectId: string, activityId: string) => void;
-  earnBadge: (badgeId: string) => void;
+  points: number;
+  completeActivity: (subjectId: string, quizId: string, score?: number) => void;
+  markMaterialCompleted: (subjectId: string, materialTitle: string) => void;
+  isLearningMaterialCompleted: (subjectId: string, materialTitle: string) => boolean;
   resetProgress: () => void;
+  earnBadge: (badgeId: string) => boolean;
+  hasBadge: (badgeId: string) => boolean;
+}
+
+const UserProgressContext = createContext<UserProgressContextType | undefined>(undefined);
+
+const defaultSubjects: SubjectsProgress = {
+  'mathematics': { completed: 0, total: 5 },
+  'english': { completed: 0, total: 5 },
+  'french': { completed: 0, total: 5 },
+  'science': { completed: 0, total: 5 },
+  'history': { completed: 0, total: 4 },
+  'geography': { completed: 0, total: 4 },
 };
 
-// Initial badges list
-const initialBadges: Badge[] = [
+const availableBadges: Badge[] = [
   {
-    id: 'first-login',
-    name: 'First Day',
-    icon: 'star',
-    description: 'You logged in for the first time!',
-    earned: false,
-  },
-  {
-    id: 'math-whiz',
-    name: 'Math Whiz',
-    icon: 'trophy',
-    description: 'Complete 5 math activities',
-    earned: false,
-  },
-  {
-    id: 'language-lover',
-    name: 'Language Lover',
-    icon: 'book',
-    description: 'Complete 5 language activities',
-    earned: false,
-  },
-  {
-    id: 'science-explorer',
-    name: 'Science Explorer',
-    icon: 'flask',
-    description: 'Complete 5 science activities',
-    earned: false,
+    id: 'first-quiz',
+    name: 'First Quiz',
+    description: 'Completed your first quiz',
+    icon: 'Trophy',
   },
   {
     id: 'perfect-score',
     name: 'Perfect Score',
-    icon: 'check-circle',
-    description: 'Get 100% on any quiz',
-    earned: false,
+    description: 'Got 100% on a quiz',
+    icon: 'Award',
   },
+  {
+    id: 'subject-master',
+    name: 'Subject Master',
+    description: 'Completed all activities in a subject',
+    icon: 'Medal',
+  },
+  {
+    id: 'study-streak',
+    name: 'Study Streak',
+    description: 'Completed activities 3 days in a row',
+    icon: 'Flame',
+  },
+  {
+    id: 'first-material',
+    name: 'Learning Pioneer',
+    description: 'Completed your first learning material',
+    icon: 'BookOpen', 
+  },
+  {
+    id: 'avid-learner',
+    name: 'Avid Learner',
+    description: 'Completed 10 learning materials',
+    icon: 'GraduationCap',
+  }
 ];
 
-// Initial subjects
-const initialSubjects: Record<string, Subject> = {
-  'mathematics': {
-    id: 'mathematics',
-    name: 'Mathematics',
-    completed: 0,
-    total: 15,
-  },
-  'english': {
-    id: 'english',
-    name: 'English',
-    completed: 0,
-    total: 12,
-  },
-  'french': {
-    id: 'french',
-    name: 'French',
-    completed: 0,
-    total: 12,
-  },
-  'science': {
-    id: 'science',
-    name: 'Science',
-    completed: 0,
-    total: 10,
-  },
-  'history': {
-    id: 'history',
-    name: 'History',
-    completed: 0,
-    total: 8,
-  },
-  'geography': {
-    id: 'geography',
-    name: 'Geography',
-    completed: 0,
-    total: 8,
-  },
-};
-
-// Calculate level from points
-const calculateLevel = (points: number): number => {
-  return Math.floor(points / 100) + 1;
-};
-
-// Create context
-const UserProgressContext = createContext<UserProgressContextType | undefined>(undefined);
-
 export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Initialize state from localStorage or use defaults
-  const [points, setPoints] = useState<number>(() => {
-    const savedPoints = localStorage.getItem('user-points');
-    return savedPoints ? parseInt(savedPoints, 10) : 0;
+  // Load from localStorage or use defaults
+  const [subjects, setSubjects] = useState<SubjectsProgress>(() => {
+    const saved = localStorage.getItem('subjects');
+    return saved ? JSON.parse(saved) : defaultSubjects;
   });
   
-  const [level, setLevel] = useState<number>(() => calculateLevel(points));
+  const [completedQuizzes, setCompletedQuizzes] = useState<CompletedQuiz[]>(() => {
+    const saved = localStorage.getItem('completedQuizzes');
+    return saved ? JSON.parse(saved) : [];
+  });
+  
+  const [completedMaterials, setCompletedMaterials] = useState<CompletedMaterial[]>(() => {
+    const saved = localStorage.getItem('completedMaterials');
+    return saved ? JSON.parse(saved) : [];
+  });
   
   const [badges, setBadges] = useState<Badge[]>(() => {
-    const savedBadges = localStorage.getItem('user-badges');
-    return savedBadges ? JSON.parse(savedBadges) : initialBadges;
+    const saved = localStorage.getItem('badges');
+    return saved ? JSON.parse(saved) : availableBadges.map(badge => ({...badge}));
   });
   
-  const [subjects, setSubjects] = useState<Record<string, Subject>>(() => {
-    const savedSubjects = localStorage.getItem('user-subjects');
-    return savedSubjects ? JSON.parse(savedSubjects) : initialSubjects;
+  const [points, setPoints] = useState<number>(() => {
+    const saved = localStorage.getItem('points');
+    return saved ? parseInt(saved, 10) : 0;
   });
-
+  
   // Save to localStorage whenever state changes
   useEffect(() => {
-    localStorage.setItem('user-points', points.toString());
-    localStorage.setItem('user-badges', JSON.stringify(badges));
-    localStorage.setItem('user-subjects', JSON.stringify(subjects));
-    
-    // Update level whenever points change
-    setLevel(calculateLevel(points));
-  }, [points, badges, subjects]);
-
-  // Award first-login badge on initial load
+    localStorage.setItem('subjects', JSON.stringify(subjects));
+  }, [subjects]);
+  
   useEffect(() => {
-    const firstLoginBadge = badges.find(badge => badge.id === 'first-login');
-    if (firstLoginBadge && !firstLoginBadge.earned) {
-      earnBadge('first-login');
-    }
-  }, []);
-
-  // Add points and check for level up
-  const addPoints = (amount: number) => {
-    const newPoints = points + amount;
-    setPoints(newPoints);
-    
-    // Check if leveled up
-    const newLevel = calculateLevel(newPoints);
-    if (newLevel > level) {
-      // Show level up notification (to be implemented)
-      console.log(`Leveled up to ${newLevel}!`);
-    }
-  };
-
-  // Mark an activity as completed
-  const completeActivity = (subjectId: string, activityId: string) => {
-    if (subjects[subjectId]) {
-      const updatedSubject = {
-        ...subjects[subjectId],
-        completed: subjects[subjectId].completed + 1
-      };
-      
-      setSubjects({
-        ...subjects,
-        [subjectId]: updatedSubject
-      });
-      
-      // Add points for completing an activity
-      addPoints(10);
-      
-      // Check for badge conditions
-      checkBadgeConditions(subjectId);
-    }
-  };
-
-  // Earn a badge
-  const earnBadge = (badgeId: string) => {
-    setBadges(prevBadges => 
-      prevBadges.map(badge => 
-        badge.id === badgeId 
-          ? { ...badge, earned: true, earnedAt: new Date() } 
-          : badge
-      )
+    localStorage.setItem('completedQuizzes', JSON.stringify(completedQuizzes));
+  }, [completedQuizzes]);
+  
+  useEffect(() => {
+    localStorage.setItem('completedMaterials', JSON.stringify(completedMaterials));
+  }, [completedMaterials]);
+  
+  useEffect(() => {
+    localStorage.setItem('badges', JSON.stringify(badges));
+  }, [badges]);
+  
+  useEffect(() => {
+    localStorage.setItem('points', points.toString());
+  }, [points]);
+  
+  // Mark a quiz as completed
+  const completeActivity = (subjectId: string, quizId: string, score?: number) => {
+    // Check if already completed
+    const alreadyCompleted = completedQuizzes.some(
+      quiz => quiz.subjectId === subjectId && quiz.quizId === quizId
     );
     
-    // Add points for earning a badge
-    addPoints(50);
+    // If not completed, add to completedQuizzes
+    if (!alreadyCompleted) {
+      const newQuiz: CompletedQuiz = {
+        subjectId,
+        quizId,
+        timestamp: Date.now(),
+        score
+      };
+      
+      setCompletedQuizzes([...completedQuizzes, newQuiz]);
+      
+      // Update subject progress
+      setSubjects(prev => ({
+        ...prev,
+        [subjectId]: {
+          ...prev[subjectId],
+          completed: prev[subjectId].completed + 1
+        }
+      }));
+      
+      // Award points
+      setPoints(prev => prev + 10);
+      
+      // Check for badges
+      if (completedQuizzes.length === 0) {
+        earnBadge('first-quiz');
+      }
+      
+      // Check if all activities in the subject are completed
+      if (subjects[subjectId].completed + 1 === subjects[subjectId].total) {
+        earnBadge('subject-master');
+      }
+    }
   };
-
-  // Check if any badge conditions are met
-  const checkBadgeConditions = (subjectId: string) => {
-    // Check subject-specific badges
-    if (subjectId === 'mathematics' && subjects['mathematics'].completed >= 5) {
-      const mathWhizBadge = badges.find(badge => badge.id === 'math-whiz');
-      if (mathWhizBadge && !mathWhizBadge.earned) {
-        earnBadge('math-whiz');
-      }
-    }
+  
+  // Mark a learning material as completed
+  const markMaterialCompleted = (subjectId: string, materialTitle: string) => {
+    // Check if already completed
+    const alreadyCompleted = completedMaterials.some(
+      material => material.subjectId === subjectId && material.materialTitle === materialTitle
+    );
     
-    if ((subjectId === 'english' || subjectId === 'french') && 
-        (subjects['english'].completed + subjects['french'].completed >= 5)) {
-      const languageBadge = badges.find(badge => badge.id === 'language-lover');
-      if (languageBadge && !languageBadge.earned) {
-        earnBadge('language-lover');
+    // If not completed, add to completedMaterials
+    if (!alreadyCompleted) {
+      const newMaterial: CompletedMaterial = {
+        subjectId,
+        materialTitle,
+        timestamp: Date.now()
+      };
+      
+      setCompletedMaterials([...completedMaterials, newMaterial]);
+      
+      // Award points
+      setPoints(prev => prev + 5);
+      
+      // Check for badges
+      if (completedMaterials.length === 0) {
+        earnBadge('first-material');
       }
-    }
-    
-    if (subjectId === 'science' && subjects['science'].completed >= 5) {
-      const scienceBadge = badges.find(badge => badge.id === 'science-explorer');
-      if (scienceBadge && !scienceBadge.earned) {
-        earnBadge('science-explorer');
+      
+      if (completedMaterials.length + 1 >= 10) {
+        earnBadge('avid-learner');
       }
     }
   };
-
-  // Reset all progress (for testing)
+  
+  // Check if a learning material is completed
+  const isLearningMaterialCompleted = (subjectId: string, materialTitle: string): boolean => {
+    return completedMaterials.some(
+      material => material.subjectId === subjectId && material.materialTitle === materialTitle
+    );
+  };
+  
+  // Reset all progress
   const resetProgress = () => {
+    setSubjects(defaultSubjects);
+    setCompletedQuizzes([]);
+    setCompletedMaterials([]);
+    setBadges(availableBadges.map(badge => ({...badge})));
     setPoints(0);
-    setBadges(initialBadges);
-    setSubjects(initialSubjects);
+    
+    // Clear localStorage
+    localStorage.removeItem('subjects');
+    localStorage.removeItem('completedQuizzes');
+    localStorage.removeItem('completedMaterials');
+    localStorage.removeItem('badges');
+    localStorage.removeItem('points');
   };
-
+  
+  // Award a badge if not already earned
+  const earnBadge = (badgeId: string): boolean => {
+    const badgeIndex = badges.findIndex(badge => badge.id === badgeId);
+    
+    if (badgeIndex >= 0 && !badges[badgeIndex].earnedAt) {
+      const updatedBadges = [...badges];
+      updatedBadges[badgeIndex] = {
+        ...updatedBadges[badgeIndex],
+        earnedAt: Date.now()
+      };
+      
+      setBadges(updatedBadges);
+      setPoints(prev => prev + 20); // Bonus points for earning a badge
+      return true;
+    }
+    
+    return false;
+  };
+  
+  // Check if user has a specific badge
+  const hasBadge = (badgeId: string): boolean => {
+    return badges.some(badge => badge.id === badgeId && badge.earnedAt !== undefined);
+  };
+  
   return (
-    <UserProgressContext.Provider 
-      value={{ 
-        points, 
-        level, 
-        badges, 
-        subjects, 
-        addPoints, 
-        completeActivity, 
+    <UserProgressContext.Provider
+      value={{
+        subjects,
+        completedQuizzes,
+        completedMaterials,
+        badges,
+        points,
+        completeActivity,
+        markMaterialCompleted,
+        isLearningMaterialCompleted,
+        resetProgress,
         earnBadge,
-        resetProgress
+        hasBadge
       }}
     >
       {children}
@@ -252,8 +288,7 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
   );
 };
 
-// Custom hook for using the context
-export const useUserProgress = () => {
+export const useUserProgress = (): UserProgressContextType => {
   const context = useContext(UserProgressContext);
   if (context === undefined) {
     throw new Error('useUserProgress must be used within a UserProgressProvider');
