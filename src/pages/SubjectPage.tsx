@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Book, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Book, CheckCircle, UserRound, GraduationCap } from 'lucide-react';
 
 import MainLayout from '../components/MainLayout';
 import ProgressBar from '../components/ProgressBar';
@@ -15,6 +15,7 @@ const SubjectPage = () => {
   const { subjects } = useUserProgress();
   const [subject, setSubject] = useState(getSubjectById(subjectId || ''));
   const [quizzes, setQuizzes] = useState(getQuizzesBySubject(subjectId || ''));
+  const [selectedAgeLevel, setSelectedAgeLevel] = useState<'beginner' | 'intermediate' | 'advanced'>('beginner');
   
   useEffect(() => {
     // Update data when subjectId changes
@@ -75,6 +76,43 @@ const SubjectPage = () => {
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="mb-8"
+      >
+        <h2 className="text-2xl font-bold mb-4">Choose Your Age Level</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          {subject.ageLevels.map((ageLevel) => (
+            <div 
+              key={ageLevel.level}
+              onClick={() => setSelectedAgeLevel(ageLevel.level)}
+              className={`edu-card p-4 cursor-pointer transition-all ${
+                selectedAgeLevel === ageLevel.level 
+                  ? 'border-2 border-edu-blue shadow-lg transform -translate-y-1' 
+                  : 'hover:shadow-md'
+              }`}
+            >
+              <div className="flex items-center mb-2">
+                <div className={`p-2 rounded-lg ${
+                  ageLevel.level === 'beginner' 
+                    ? 'bg-green-100 text-green-600' 
+                    : ageLevel.level === 'intermediate'
+                      ? 'bg-yellow-100 text-yellow-600'
+                      : 'bg-red-100 text-red-600'
+                } mr-3`}>
+                  <GraduationCap className="w-5 h-5" />
+                </div>
+                <span className="font-bold text-lg capitalize">{ageLevel.level}</span>
+                <span className="ml-auto text-sm bg-gray-100 px-2 py-1 rounded-full">Ages {ageLevel.ageRange}</span>
+              </div>
+              <p className="text-gray-600 text-sm">{ageLevel.description}</p>
+            </div>
+          ))}
+        </div>
+      </motion.section>
+      
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
         className="mb-8"
       >
@@ -105,43 +143,62 @@ const SubjectPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <h2 className="text-2xl font-bold mb-4">Quizzes & Activities</h2>
+        <h2 className="text-2xl font-bold mb-4">Quizzes & Activities for {selectedAgeLevel.charAt(0).toUpperCase() + selectedAgeLevel.slice(1)} Level</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {quizzes.map((quiz, index) => (
-            <motion.div
-              key={quiz.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * index }}
-              className="edu-card"
-            >
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="text-xl font-bold">{quiz.title}</h3>
-                <div className={`badge ${
-                  quiz.level === 'easy' 
-                    ? 'bg-green-100 text-green-800' 
-                    : quiz.level === 'medium'
-                      ? 'bg-yellow-100 text-yellow-800'
-                      : 'bg-red-100 text-red-800'
-                }`}>
-                  {quiz.level.charAt(0).toUpperCase() + quiz.level.slice(1)}
+          {quizzes
+            .filter(quiz => {
+              // Filter quizzes based on the selected age level
+              if (selectedAgeLevel === 'beginner' && quiz.level === 'easy') return true;
+              if (selectedAgeLevel === 'intermediate' && quiz.level === 'medium') return true;
+              if (selectedAgeLevel === 'advanced' && quiz.level === 'hard') return true;
+              return false;
+            })
+            .map((quiz, index) => (
+              <motion.div
+                key={quiz.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * index }}
+                className="edu-card"
+              >
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-xl font-bold">{quiz.title}</h3>
+                  <div className={`badge ${
+                    quiz.level === 'easy' 
+                      ? 'bg-green-100 text-green-800' 
+                      : quiz.level === 'medium'
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-red-100 text-red-800'
+                  }`}>
+                    {quiz.level.charAt(0).toUpperCase() + quiz.level.slice(1)}
+                  </div>
                 </div>
-              </div>
-              <p className="text-gray-600 mb-4">{quiz.description}</p>
-              <div className="flex justify-between items-center">
-                <div className="text-sm text-gray-500">
-                  {quiz.questions.length} questions
+                <p className="text-gray-600 mb-4">{quiz.description}</p>
+                <div className="flex justify-between items-center">
+                  <div className="text-sm text-gray-500">
+                    {quiz.questions.length} questions
+                  </div>
+                  <Link
+                    to={`/quiz/${subject.id}/${quiz.id}`}
+                    className="edu-button-secondary text-sm py-2 px-4"
+                  >
+                    Start Quiz
+                  </Link>
                 </div>
-                <Link
-                  to={`/quiz/${subject.id}/${quiz.id}`}
-                  className="edu-button-secondary text-sm py-2 px-4"
-                >
-                  Start Quiz
-                </Link>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+            
+          {quizzes.filter(quiz => {
+            if (selectedAgeLevel === 'beginner' && quiz.level === 'easy') return true;
+            if (selectedAgeLevel === 'intermediate' && quiz.level === 'medium') return true;
+            if (selectedAgeLevel === 'advanced' && quiz.level === 'hard') return true;
+            return false;
+          }).length === 0 && (
+            <div className="col-span-full edu-card p-6 text-center">
+              <p className="text-gray-600">No quizzes available for this level yet. Check back soon!</p>
+            </div>
+          )}
         </div>
       </motion.section>
     </MainLayout>
