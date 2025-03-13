@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, Star, Trophy, BookOpen, Flask, CheckCircle } from 'lucide-react';
+import { Check, Star, Trophy, BookOpen, FlaskConical, CheckCircle } from 'lucide-react';
 
 interface BadgeItemProps {
   id: string;
@@ -30,7 +29,7 @@ const BadgeItem: React.FC<BadgeItemProps> = ({
       case 'book':
         return <BookOpen className="w-6 h-6" />;
       case 'flask':
-        return <Flask className="w-6 h-6" />;
+        return <FlaskConical className="w-6 h-6" />;
       case 'check-circle':
         return <CheckCircle className="w-6 h-6" />;
       default:
