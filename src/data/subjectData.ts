@@ -17,7 +17,7 @@ export const subjects: SubjectData[] = [
     description: 'Learn numbers, basic operations, shapes, and problem-solving',
     icon: 'Calculator',
     bgColor: 'bg-edu-blue/10',
-    topics: ['Numbers', 'Addition & Subtraction', 'Multiplication & Division', 'Shapes', 'Measurements']
+    topics: ['Numbers & Counting', 'Addition & Subtraction', 'Multiplication & Division', 'Geometry & Shapes', 'Measurements', 'Fractions']
   },
   {
     id: 'english',
@@ -25,7 +25,7 @@ export const subjects: SubjectData[] = [
     description: 'Develop reading, writing, grammar, and vocabulary skills',
     icon: 'BookOpen',
     bgColor: 'bg-edu-green/10',
-    topics: ['Alphabet', 'Phonics', 'Reading', 'Grammar', 'Vocabulary']
+    topics: ['Alphabet & Phonics', 'Reading Comprehension', 'Grammar Rules', 'Vocabulary Building', 'Writing Skills', 'Spelling']
   },
   {
     id: 'french',
@@ -33,7 +33,7 @@ export const subjects: SubjectData[] = [
     description: 'Learn basic French vocabulary, phrases, and grammar',
     icon: 'Languages',
     bgColor: 'bg-edu-purple/10',
-    topics: ['Greetings', 'Numbers', 'Colors', 'Family', 'School']
+    topics: ['Basic Greetings', 'Numbers & Colors', 'Family & Friends', 'Food & Dining', 'School Vocabulary', 'Simple Conversations']
   },
   {
     id: 'science',
@@ -41,7 +41,7 @@ export const subjects: SubjectData[] = [
     description: 'Explore living things, materials, and the natural world',
     icon: 'Atom',
     bgColor: 'bg-edu-orange/10',
-    topics: ['Living Things', 'Materials', 'Weather', 'Human Body', 'Environmental Science']
+    topics: ['Plants & Animals', 'Human Body', 'Materials & Properties', 'Weather & Seasons', 'Environmental Science', 'Simple Experiments']
   },
   {
     id: 'history',
@@ -49,7 +49,7 @@ export const subjects: SubjectData[] = [
     description: 'Discover Mauritius\' past, heritage, and important events',
     icon: 'Clock',
     bgColor: 'bg-edu-yellow/10',
-    topics: ['Early Settlements', 'Colonial Period', 'Independence', 'Cultural Heritage', 'Famous Figures']
+    topics: ['Early Settlements', 'Dutch & French Colonization', 'British Colonial Period', 'Path to Independence', 'Modern Mauritius', 'Cultural Heritage']
   },
   {
     id: 'geography',
@@ -57,7 +57,7 @@ export const subjects: SubjectData[] = [
     description: 'Learn about Mauritius\' landscape, climate, and resources',
     icon: 'Globe',
     bgColor: 'bg-edu-red/10',
-    topics: ['Islands of Mauritius', 'Landforms', 'Climate', 'Natural Resources', 'Tourism']
+    topics: ['Islands of Mauritius', 'Mountains & Landscapes', 'Beaches & Lagoons', 'Climate & Weather', 'Natural Resources', 'Tourism & Economy']
   }
 ];
 
