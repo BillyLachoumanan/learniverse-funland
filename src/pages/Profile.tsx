@@ -8,9 +8,11 @@ import ProgressBar from '../components/ProgressBar';
 import { Button } from '../components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import ProfileForm from '../components/ProfileForm';
+import FollowUpRecommendations from '../components/FollowUpRecommendations';
 
 const Profile = () => {
-  const { points, level, badges, subjects, resetProgress } = useUserProgress();
+  const { points, level, badges, subjects, resetProgress, studentInfo } = useUserProgress();
   const navigate = useNavigate();
   
   // Calculate total progress across all subjects
@@ -35,12 +37,22 @@ const Profile = () => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        {/* Left Column - Stats */}
+        {/* Left Column - Stats and Student Info */}
         <div className="md:col-span-4 space-y-6">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
+            className="bg-white rounded-xl shadow-edu-card p-6"
+          >
+            <h2 className="text-xl font-bold mb-4 text-edu-blue">Student Profile</h2>
+            <ProfileForm />
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
             className="bg-white rounded-xl shadow-edu-card p-6"
           >
             <h2 className="text-xl font-bold mb-4 text-edu-blue">My Progress</h2>
@@ -85,7 +97,7 @@ const Profile = () => {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.3 }}
             className="bg-white rounded-xl shadow-edu-card p-6"
           >
             <h2 className="text-xl font-bold mb-4 text-edu-blue">Settings</h2>
@@ -103,12 +115,16 @@ const Profile = () => {
           </motion.div>
         </div>
         
-        {/* Right Column - Badges */}
-        <div className="md:col-span-8">
+        {/* Right Column - Recommendations and Badges */}
+        <div className="md:col-span-8 space-y-6">
+          {/* Personalized Recommendations */}
+          {studentInfo && <FollowUpRecommendations />}
+          
+          {/* Badges */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.4 }}
             className="bg-white rounded-xl shadow-edu-card p-6"
           >
             <h2 className="text-xl font-bold mb-4 text-edu-blue">My Badges</h2>

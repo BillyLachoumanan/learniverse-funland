@@ -5,7 +5,7 @@ import { subjects } from '../data/subjectData';
 export interface SubjectProgress {
   completed: number;
   total: number;
-  name: string; // Add name property to SubjectProgress
+  name: string;
 }
 
 // Define badge interface
@@ -18,6 +18,12 @@ export interface Badge {
   earnedAt?: Date;
 }
 
+// Define student information interface
+export interface StudentInfo {
+  name: string;
+  age: number;
+}
+
 // Define the user progress context type
 export interface UserProgressContextType {
   subjects: Record<string, SubjectProgress>;
@@ -28,7 +34,6 @@ export interface UserProgressContextType {
   markTopicReviewed: (subjectId: string, topicName: string) => void;
   isTopicReviewed: (subjectId: string, topicName: string) => boolean;
   
-  // Add missing properties
   points: number;
   level: number;
   badges: Badge[];
@@ -36,6 +41,9 @@ export interface UserProgressContextType {
   resetProgress: () => void;
   completeActivity: (subjectId: string, activityId: string) => void;
   earnBadge: (badgeId: string) => void;
+  
+  studentInfo: StudentInfo | null;
+  updateStudentInfo: (info: StudentInfo) => void;
 }
 
 // Create the context with default values
@@ -48,7 +56,6 @@ const UserProgressContext = createContext<UserProgressContextType>({
   markTopicReviewed: () => {},
   isTopicReviewed: () => false,
   
-  // Add default values for new properties
   points: 0,
   level: 1,
   badges: [],
@@ -56,6 +63,9 @@ const UserProgressContext = createContext<UserProgressContextType>({
   resetProgress: () => {},
   completeActivity: () => {},
   earnBadge: () => {},
+  
+  studentInfo: null,
+  updateStudentInfo: () => {},
 });
 
 // Hook to use the user progress context
@@ -120,7 +130,7 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
       initialProgress[subject.id] = {
         completed: 0,
         total: subject.learningMaterials.length + subject.topics.length,
-        name: subject.name, // Include the subject name
+        name: subject.name,
       };
     });
     return initialProgress;
@@ -131,6 +141,9 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
   
   // Track reviewed topics
   const [reviewedTopics, setReviewedTopics] = useState<{ subjectId: string; topicName: string }[]>([]);
+  
+  // Initialize student information
+  const [studentInfo, setStudentInfo] = useState<StudentInfo | null>(null);
   
   // Calculate level based on points
   const level = calculateLevel(points);
@@ -183,6 +196,7 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
     localStorage.removeItem('subjectProgress');
     localStorage.removeItem('completedMaterials');
     localStorage.removeItem('reviewedTopics');
+    localStorage.removeItem('studentInfo');
   };
 
   // Mark a learning material as completed
@@ -285,6 +299,11 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
     );
   };
 
+  // Update student information
+  const updateStudentInfo = (info: StudentInfo) => {
+    setStudentInfo(info);
+  };
+
   // Load progress from localStorage
   useEffect(() => {
     const savedPoints = localStorage.getItem('userPoints');
@@ -292,6 +311,7 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
     const savedProgress = localStorage.getItem('subjectProgress');
     const savedMaterials = localStorage.getItem('completedMaterials');
     const savedTopics = localStorage.getItem('reviewedTopics');
+    const savedStudentInfo = localStorage.getItem('studentInfo');
     
     if (savedPoints) {
       setPoints(JSON.parse(savedPoints));
@@ -312,6 +332,10 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
     if (savedTopics) {
       setReviewedTopics(JSON.parse(savedTopics));
     }
+    
+    if (savedStudentInfo) {
+      setStudentInfo(JSON.parse(savedStudentInfo));
+    }
   }, []);
 
   // Save progress to localStorage
@@ -321,7 +345,10 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
     localStorage.setItem('subjectProgress', JSON.stringify(subjectProgress));
     localStorage.setItem('completedMaterials', JSON.stringify(completedMaterials));
     localStorage.setItem('reviewedTopics', JSON.stringify(reviewedTopics));
-  }, [points, badges, subjectProgress, completedMaterials, reviewedTopics]);
+    if (studentInfo) {
+      localStorage.setItem('studentInfo', JSON.stringify(studentInfo));
+    }
+  }, [points, badges, subjectProgress, completedMaterials, reviewedTopics, studentInfo]);
 
   return (
     <UserProgressContext.Provider
@@ -340,6 +367,8 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
         resetProgress,
         completeActivity,
         earnBadge,
+        studentInfo,
+        updateStudentInfo,
       }}
     >
       {children}
