@@ -102,9 +102,11 @@ const LearningMaterial: React.FC<LearningMaterialProps> = ({
           className="border-t border-gray-100 p-4"
         >
           <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none">
-            <ReactMarkdown className="react-markdown">
-              {material.content}
-            </ReactMarkdown>
+            <div className="react-markdown">
+              <ReactMarkdown>
+                {material.content}
+              </ReactMarkdown>
+            </div>
           </div>
           
           <div className="mt-6 flex justify-end">
