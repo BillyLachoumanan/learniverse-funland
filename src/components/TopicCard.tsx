@@ -53,6 +53,11 @@ const TopicCard: React.FC<TopicCardProps> = ({
   
   const youtubeEmbedUrl = explanation?.videoUrl ? getYoutubeEmbedUrl(explanation.videoUrl) : null;
 
+  // Don't render the card if there's no explanation
+  if (!explanation) {
+    return null;
+  }
+
   return (
     <motion.div 
       className="w-full edu-card overflow-hidden"

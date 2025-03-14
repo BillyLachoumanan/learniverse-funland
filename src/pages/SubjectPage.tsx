@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -44,6 +45,15 @@ const SubjectPage = () => {
   // Filter learning materials based on selected age level
   const filteredMaterials = subject.learningMaterials
     ? subject.learningMaterials.filter(material => material.level === selectedAgeLevel)
+    : [];
+  
+  // Filter topics based on age level - new code
+  const filteredTopics = subject.topics
+    ? subject.topics.filter(topic => {
+        const explanation = getTopicExplanation(subject.id, topic);
+        // Only include topics that have explanations
+        return explanation !== undefined;
+      })
     : [];
   
   // Count completed materials for the current subject
@@ -129,9 +139,9 @@ const SubjectPage = () => {
         className="mb-8"
       >
         <h2 className="text-2xl font-bold mb-4">Topics</h2>
-        {subject.topics && subject.topics.length > 0 ? (
+        {filteredTopics && filteredTopics.length > 0 ? (
           <div className="grid grid-cols-1 gap-4">
-            {subject.topics.map((topic, index) => (
+            {filteredTopics.map((topic, index) => (
               <TopicCard 
                 key={index} 
                 subjectId={subject.id}
