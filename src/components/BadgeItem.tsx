@@ -9,7 +9,7 @@ interface BadgeItemProps {
   icon: string;
   description: string;
   earned: boolean;
-  earnedAt?: number;
+  earnedAt?: Date;
 }
 
 const BadgeItem: React.FC<BadgeItemProps> = ({ 
@@ -67,7 +67,7 @@ const BadgeItem: React.FC<BadgeItemProps> = ({
           <p className="text-sm text-gray-600 mt-1">{description}</p>
           {earned && earnedAt && (
             <p className="text-xs text-gray-400 mt-2">
-              Earned on {new Date(earnedAt).toLocaleDateString()}
+              Earned on {earnedAt.toLocaleDateString()}
             </p>
           )}
         </div>
