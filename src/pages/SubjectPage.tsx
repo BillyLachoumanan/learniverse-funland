@@ -47,11 +47,11 @@ const SubjectPage = () => {
     ? subject.learningMaterials.filter(material => material.level === selectedAgeLevel)
     : [];
   
-  // Filter topics based on age level - new code
+  // Filter topics based on age level
   const filteredTopics = subject.topics
     ? subject.topics.filter(topic => {
-        const explanation = getTopicExplanation(subject.id, topic);
-        // Only include topics that have explanations
+        const explanation = getTopicExplanation(subject.id, topic, selectedAgeLevel);
+        // Only include topics that have explanations for the current age level
         return explanation !== undefined;
       })
     : [];
@@ -146,13 +146,13 @@ const SubjectPage = () => {
                 key={index} 
                 subjectId={subject.id}
                 topic={topic}
-                explanation={getTopicExplanation(subject.id, topic)}
+                explanation={getTopicExplanation(subject.id, topic, selectedAgeLevel)}
               />
             ))}
           </div>
         ) : (
           <div className="edu-card p-6 text-center">
-            <p className="text-gray-600">No topics available for this subject yet.</p>
+            <p className="text-gray-600">No topics available for this subject and age level yet.</p>
           </div>
         )}
       </motion.section>

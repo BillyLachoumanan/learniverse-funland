@@ -9,6 +9,7 @@ interface TopicExplanation {
   title: string;
   content: string;
   videoUrl?: string;
+  ageLevel?: 'beginner' | 'intermediate' | 'advanced';
 }
 
 interface TopicCardProps {
@@ -97,9 +98,10 @@ const TopicCard: React.FC<TopicCardProps> = ({
           className="border-t border-gray-100 p-4"
         >
           <h3 className="text-xl font-bold mb-3">{explanation.title}</h3>
-          <div className="prose prose-sm md:prose-base max-w-none mb-4">
-            {explanation.content}
-          </div>
+          <div 
+            className="prose prose-sm md:prose-base max-w-none mb-4"
+            dangerouslySetInnerHTML={{ __html: explanation.content }}
+          />
           
           {youtubeEmbedUrl && (
             <div className="mt-4 mb-6">

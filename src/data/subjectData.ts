@@ -1,3 +1,4 @@
+
 import { BookOpen, Calculator, Atom, Languages, Globe, Clock } from 'lucide-react';
 
 export interface SubjectData {
@@ -24,13 +25,15 @@ export interface TopicExplanation {
   title: string;
   content: string;
   videoUrl?: string;
+  ageLevel?: 'beginner' | 'intermediate' | 'advanced';
 }
 
-const topicExplanations: Record<string, Record<string, TopicExplanation>> = {
+const topicExplanations: Record<string, Record<string, Record<string, TopicExplanation>>> = {
   "mathematics": {
     "Numbers & Counting": {
-      title: "Numbers & Counting",
-      content: `<p>Numbers are symbols that represent quantity. We use them to count objects, measure things, and solve problems.</p>
+      "beginner": {
+        title: "Numbers & Counting",
+        content: `<p>Numbers are symbols that represent quantity. We use them to count objects, measure things, and solve problems.</p>
       
 <h3>How to Count from 1 to 10:</h3>
 <ol>
@@ -53,11 +56,84 @@ const topicExplanations: Record<string, Record<string, TopicExplanation>> = {
   <li>How many chairs are in your classroom?</li>
   <li>How many days are in a week? (Hint: 7!)</li>
 </ul>`,
-      videoUrl: "https://www.youtube.com/watch?v=bGetqbqDVaA"
+        videoUrl: "https://www.youtube.com/watch?v=bGetqbqDVaA",
+        ageLevel: "beginner"
+      },
+      "intermediate": {
+        title: "Numbers & Place Value",
+        content: `<p>Place value helps us understand what each digit in a number means.</p>
+        
+<h3>Place Value Chart (for numbers up to 1,000):</h3>
+<ul>
+  <li>Ones place: Right-most digit</li>
+  <li>Tens place: Second digit from right</li>
+  <li>Hundreds place: Third digit from right</li>
+</ul>
+
+<h3>Examples:</h3>
+<ul>
+  <li>In the number 352:
+    <ul>
+      <li>2 is in the ones place (value = 2)</li>
+      <li>5 is in the tens place (value = 50)</li>
+      <li>3 is in the hundreds place (value = 300)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Expanded Form:</h3>
+<p>Writing a number to show the value of each digit.</p>
+<ul>
+  <li>352 = 300 + 50 + 2</li>
+  <li>495 = 400 + 90 + 5</li>
+</ul>
+
+<h3>Comparing Numbers:</h3>
+<p>Use place value to compare which number is greater.</p>
+<ul>
+  <li>Compare the highest place value first.</li>
+  <li>If those are equal, move to the next place value.</li>
+  <li>Use symbols: > (greater than), < (less than), = (equal to)</li>
+</ul>`,
+        videoUrl: "https://www.youtube.com/watch?v=D5rG5YvP0s4",
+        ageLevel: "intermediate"
+      },
+      "advanced": {
+        title: "Number Systems & Properties",
+        content: `<p>Number systems help us categorize and work with different types of numbers.</p>
+        
+<h3>Types of Numbers:</h3>
+<ul>
+  <li>Natural Numbers: 1, 2, 3, 4, ... (counting numbers)</li>
+  <li>Whole Numbers: 0, 1, 2, 3, ... (natural numbers plus zero)</li>
+  <li>Integers: ..., -3, -2, -1, 0, 1, 2, 3, ... (whole numbers plus negative numbers)</li>
+  <li>Rational Numbers: Numbers that can be written as fractions (p/q where q≠0)</li>
+  <li>Irrational Numbers: Numbers that cannot be written as fractions (like π and √2)</li>
+</ul>
+
+<h3>Properties of Numbers:</h3>
+<ul>
+  <li>Commutative Property: a + b = b + a and a × b = b × a</li>
+  <li>Associative Property: (a + b) + c = a + (b + c) and (a × b) × c = a × (b × c)</li>
+  <li>Distributive Property: a × (b + c) = a × b + a × c</li>
+  <li>Identity Property: a + 0 = a (additive) and a × 1 = a (multiplicative)</li>
+</ul>
+
+<h3>Factors and Multiples:</h3>
+<ul>
+  <li>Factors: Numbers that divide evenly into another number</li>
+  <li>Multiples: Results of multiplying a number by integers</li>
+  <li>Prime Numbers: Numbers with exactly two factors (1 and itself)</li>
+  <li>Composite Numbers: Numbers with more than two factors</li>
+</ul>`,
+        videoUrl: "https://www.youtube.com/watch?v=ETTz5rKJSBk",
+        ageLevel: "advanced"
+      }
     },
     "Addition & Subtraction": {
-      title: "Addition & Subtraction",
-      content: `<p>Addition means putting things together, and subtraction means taking things away.</p>
+      "beginner": {
+        title: "Addition & Subtraction",
+        content: `<p>Addition means putting things together, and subtraction means taking things away.</p>
       
 <h3>Addition Examples:</h3>
 <ul>
@@ -76,11 +152,94 @@ const topicExplanations: Record<string, Record<string, TopicExplanation>> = {
   <li>If you have 5 pencils and your friend gives you 3 more, how many do you have?</li>
   <li>If you have 7 books and give 2 to your teacher, how many do you have left?</li>
 </ol>`,
-      videoUrl: "https://www.youtube.com/watch?v=AuX7nPBqDts"
+        videoUrl: "https://www.youtube.com/watch?v=AuX7nPBqDts",
+        ageLevel: "beginner"
+      },
+      "intermediate": {
+        title: "Addition & Subtraction with Regrouping",
+        content: `<p>Regrouping (sometimes called "carrying" and "borrowing") helps us add and subtract larger numbers.</p>
+        
+<h3>Addition with Regrouping:</h3>
+<p>When the sum of digits in any place value is 10 or more, we regroup.</p>
+<ul>
+  <li>Example: 38 + 45
+    <ul>
+      <li>Add ones: 8 + 5 = 13 (Write 3, carry 1 to tens)</li>
+      <li>Add tens: 1 + 3 + 4 = 8</li>
+      <li>Result: 83</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Subtraction with Regrouping:</h3>
+<p>When the top digit is smaller than the bottom digit, we need to borrow.</p>
+<ul>
+  <li>Example: 52 - 37
+    <ul>
+      <li>Subtract ones: 2 is less than 7, so borrow 1 from tens (5 becomes 4, 2 becomes 12)</li>
+      <li>Now subtract: 12 - 7 = 5</li>
+      <li>Subtract tens: 4 - 3 = 1</li>
+      <li>Result: 15</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Word Problems:</h3>
+<ul>
+  <li>A class collected 256 cans for recycling. They collected 178 more the next week. How many cans did they collect altogether?</li>
+  <li>A bookstore had 324 books. After a sale, they had 156 books left. How many books were sold?</li>
+</ul>`,
+        videoUrl: "https://www.youtube.com/watch?v=8mcTsyV56jI",
+        ageLevel: "intermediate"
+      },
+      "advanced": {
+        title: "Addition & Subtraction with Integers",
+        content: `<p>Working with positive and negative numbers requires special rules for addition and subtraction.</p>
+        
+<h3>Adding Integers:</h3>
+<ul>
+  <li>Same signs: Add absolute values and keep the common sign
+    <ul>
+      <li>5 + 3 = 8</li>
+      <li>(-5) + (-3) = -8</li>
+    </ul>
+  </li>
+  <li>Different signs: Subtract the smaller absolute value from the larger and keep the sign of the number with the larger absolute value
+    <ul>
+      <li>5 + (-3) = 2</li>
+      <li>(-5) + 3 = -2</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Subtracting Integers:</h3>
+<p>To subtract an integer, add its opposite (additive inverse).</p>
+<ul>
+  <li>a - b = a + (-b)</li>
+  <li>Examples:
+    <ul>
+      <li>7 - 4 = 7 + (-4) = 3</li>
+      <li>7 - (-4) = 7 + 4 = 11</li>
+      <li>-7 - 4 = -7 + (-4) = -11</li>
+      <li>-7 - (-4) = -7 + 4 = -3</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Real-world Applications:</h3>
+<ul>
+  <li>Temperature changes: If it's -2°C in the morning and drops by 5°C by evening, what's the new temperature? (-2) + (-5) = -7°C</li>
+  <li>Money: If you have Rs 500 and spend Rs 650 (using credit), what's your balance? 500 + (-650) = -150 (you owe Rs 150)</li>
+  <li>Elevation: If you start at sea level (0), go down 20m, then up 35m, what's your final elevation? 0 + (-20) + 35 = 15m above sea level</li>
+</ul>`,
+        videoUrl: "https://www.youtube.com/watch?v=C38B33ZywWs",
+        ageLevel: "advanced"
+      }
     },
     "Multiplication & Division": {
-      title: "Multiplication & Division",
-      content: `<p>Multiplication is a faster way to add the same number multiple times. Division is sharing into equal groups.</p>
+      "beginner": {
+        title: "Multiplication & Division",
+        content: `<p>Multiplication is a faster way to add the same number multiple times. Division is sharing into equal groups.</p>
       
 <h3>Multiplication Examples:</h3>
 <ul>
@@ -99,11 +258,116 @@ const topicExplanations: Record<string, Record<string, TopicExplanation>> = {
   <li>If 1 chocolate bar costs Rs 15, how much do 3 chocolate bars cost? (3 × 15 = 45 rupees)</li>
   <li>If you have 12 candies and want to share them equally with 3 friends, how many candies does each friend get? (12 ÷ 3 = 4 candies each)</li>
 </ul>`,
-      videoUrl: "https://www.youtube.com/watch?v=gzDPuWKkIZM"
+        videoUrl: "https://www.youtube.com/watch?v=gzDPuWKkIZM",
+        ageLevel: "beginner"
+      },
+      "intermediate": {
+        title: "Multiplication & Division Strategies",
+        content: `<p>Learning efficient multiplication and division strategies helps with larger numbers.</p>
+        
+<h3>Multiplication Strategies:</h3>
+<ul>
+  <li>Arrays: Organizing objects into rows and columns
+    <ul>
+      <li>4 × 6 can be shown as 4 rows with 6 items in each row</li>
+    </ul>
+  </li>
+  <li>Area Model: Drawing rectangles to represent multiplication
+    <ul>
+      <li>23 × 14 can be broken down into (20 × 10) + (20 × 4) + (3 × 10) + (3 × 4)</li>
+    </ul>
+  </li>
+  <li>Partial Products: Breaking numbers apart by place value
+    <ul>
+      <li>36 × 42 = (30 × 40) + (30 × 2) + (6 × 40) + (6 × 2)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Division Strategies:</h3>
+<ul>
+  <li>Repeated Subtraction: Keep subtracting the divisor until you reach 0
+    <ul>
+      <li>20 ÷ 5: 20 - 5 = 15, 15 - 5 = 10, 10 - 5 = 5, 5 - 5 = 0 (4 subtractions, so 20 ÷ 5 = 4)</li>
+    </ul>
+  </li>
+  <li>Long Division: Standard algorithm for larger numbers
+    <ul>
+      <li>372 ÷ 12 = 31</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Word Problems:</h3>
+<ul>
+  <li>A farmer has 156 mangoes to pack into boxes. Each box holds 12 mangoes. How many boxes will the farmer need?</li>
+  <li>The school garden has 5 rows of flowers. If there are 24 flowers in each row, how many flowers are there altogether?</li>
+</ul>`,
+        videoUrl: "https://www.youtube.com/watch?v=FJ5qLWP3Fqo",
+        ageLevel: "intermediate"
+      },
+      "advanced": {
+        title: "Multiplication & Division with Decimals",
+        content: `<p>Working with decimals in multiplication and division follows specific rules.</p>
+        
+<h3>Multiplying Decimals:</h3>
+<ol>
+  <li>Multiply the numbers as if they were whole numbers (ignore decimal points)</li>
+  <li>Count the total number of decimal places in both factors</li>
+  <li>Place the decimal point in the product so that it has the same number of decimal places as the total</li>
+</ol>
+
+<h3>Examples:</h3>
+<ul>
+  <li>2.5 × 3.4
+    <ul>
+      <li>25 × 34 = 850</li>
+      <li>2.5 has 1 decimal place, 3.4 has 1 decimal place, so total = 2 decimal places</li>
+      <li>Answer: 8.50</li>
+    </ul>
+  </li>
+  <li>0.03 × 0.2
+    <ul>
+      <li>3 × 2 = 6</li>
+      <li>0.03 has 2 decimal places, 0.2 has 1 decimal place, so total = 3 decimal places</li>
+      <li>Answer: 0.006</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Dividing Decimals:</h3>
+<ol>
+  <li>Move the decimal point in the divisor to make it a whole number</li>
+  <li>Move the decimal point in the dividend the same number of places</li>
+  <li>Divide as with whole numbers</li>
+  <li>Place the decimal point in the quotient directly above its position in the dividend</li>
+</ol>
+
+<h3>Examples:</h3>
+<ul>
+  <li>8.4 ÷ 0.2
+    <ul>
+      <li>Move decimal point in divisor: 0.2 becomes 2 (moved 1 place)</li>
+      <li>Move decimal point in dividend: 8.4 becomes 84 (moved 1 place)</li>
+      <li>84 ÷ 2 = 42</li>
+    </ul>
+  </li>
+  <li>5.67 ÷ 0.3
+    <ul>
+      <li>Move decimal point in divisor: 0.3 becomes 3 (moved 1 place)</li>
+      <li>Move decimal point in dividend: 5.67 becomes 56.7 (moved 1 place)</li>
+      <li>56.7 ÷ 3 = 18.9</li>
+    </ul>
+  </li>
+</ul>`,
+        videoUrl: "https://www.youtube.com/watch?v=nHg4RVqQ12E",
+        ageLevel: "advanced"
+      }
     },
     "Geometry & Shapes": {
-      title: "Geometry & Shapes",
-      content: `<p>Geometry is the study of shapes and how they relate to each other and to space.</p>
+      "beginner": {
+        title: "Geometry & Shapes",
+        content: `<p>Geometry is the study of shapes and how they relate to each other and to space.</p>
       
 <h3>2D Shapes:</h3>
 <ul>
@@ -126,13 +390,96 @@ const topicExplanations: Record<string, Record<string, TopicExplanation>> = {
   <li>A book is a rectangular prism</li>
   <li>A pyramid-shaped roof has triangular faces</li>
 </ul>`,
-      videoUrl: "https://www.youtube.com/watch?v=IaoZhhx_I9s"
+        videoUrl: "https://www.youtube.com/watch?v=IaoZhhx_I9s",
+        ageLevel: "beginner"
+      },
+      "intermediate": {
+        title: "Angles and Polygons",
+        content: `<p>Angles help us understand how lines meet and polygons are closed shapes made of line segments.</p>
+        
+<h3>Types of Angles:</h3>
+<ul>
+  <li>Acute Angle: Less than 90° (smaller than a right angle)</li>
+  <li>Right Angle: Exactly 90° (forms an L shape)</li>
+  <li>Obtuse Angle: Greater than 90° but less than 180°</li>
+  <li>Straight Angle: Exactly 180° (forms a straight line)</li>
+  <li>Reflex Angle: Greater than 180° but less than 360°</li>
+</ul>
+
+<h3>Measuring Angles:</h3>
+<ul>
+  <li>We use a protractor to measure angles in degrees</li>
+  <li>A full circle is 360°</li>
+</ul>
+
+<h3>Types of Polygons:</h3>
+<ul>
+  <li>Triangle: 3 sides (examples: equilateral, isosceles, scalene)</li>
+  <li>Quadrilateral: 4 sides (examples: square, rectangle, rhombus, parallelogram, trapezoid)</li>
+  <li>Pentagon: 5 sides</li>
+  <li>Hexagon: 6 sides</li>
+  <li>Octagon: 8 sides</li>
+</ul>
+
+<h3>Properties of Polygons:</h3>
+<ul>
+  <li>Regular polygons have all sides equal and all angles equal</li>
+  <li>The sum of interior angles in a triangle is 180°</li>
+  <li>The sum of interior angles in a quadrilateral is 360°</li>
+</ul>`,
+        videoUrl: "https://www.youtube.com/watch?v=DnSJ_BJ_mzs",
+        ageLevel: "intermediate"
+      },
+      "advanced": {
+        title: "Perimeter, Area, and Volume",
+        content: `<p>Perimeter, area, and volume help us measure different aspects of shapes.</p>
+        
+<h3>Perimeter:</h3>
+<p>The distance around a 2D shape.</p>
+<ul>
+  <li>Rectangle: P = 2(length + width)</li>
+  <li>Square: P = 4 × side</li>
+  <li>Triangle: P = side1 + side2 + side3</li>
+  <li>Circle: C = 2πr (circumference)</li>
+</ul>
+
+<h3>Area:</h3>
+<p>The amount of space inside a 2D shape.</p>
+<ul>
+  <li>Rectangle: A = length × width</li>
+  <li>Square: A = side²</li>
+  <li>Triangle: A = ½ × base × height</li>
+  <li>Circle: A = πr²</li>
+  <li>Parallelogram: A = base × height</li>
+  <li>Trapezoid: A = ½ × (parallel side 1 + parallel side 2) × height</li>
+</ul>
+
+<h3>Volume:</h3>
+<p>The amount of space inside a 3D shape.</p>
+<ul>
+  <li>Rectangular Prism: V = length × width × height</li>
+  <li>Cube: V = side³</li>
+  <li>Cylinder: V = πr²h</li>
+  <li>Sphere: V = ⁴⁄₃πr³</li>
+  <li>Cone: V = ⅓πr²h</li>
+</ul>
+
+<h3>Real-world Applications:</h3>
+<ul>
+  <li>Finding the amount of fencing needed for a garden (perimeter)</li>
+  <li>Calculating how much carpet is needed to cover a floor (area)</li>
+  <li>Determining how much water a tank can hold (volume)</li>
+</ul>`,
+        videoUrl: "https://www.youtube.com/watch?v=kqqmJiJez6o",
+        ageLevel: "advanced"
+      }
     }
   },
   "english": {
     "Alphabet & Phonics": {
-      title: "Alphabet & Phonics",
-      content: `<p>The English alphabet has 26 letters. Phonics helps us understand the sounds these letters make.</p>
+      "beginner": {
+        title: "Alphabet & Phonics",
+        content: `<p>The English alphabet has 26 letters. Phonics helps us understand the sounds these letters make.</p>
       
 <h3>Vowels and Consonants:</h3>
 <ul>
@@ -159,13 +506,104 @@ const topicExplanations: Record<string, Record<string, TopicExplanation>> = {
   <li>Name an animal for each letter of the alphabet</li>
   <li>Find objects around your house that start with different letters</li>
 </ul>`,
-      videoUrl: "https://www.youtube.com/watch?v=hq3yfQnllfQ"
+        videoUrl: "https://www.youtube.com/watch?v=hq3yfQnllfQ",
+        ageLevel: "beginner"
+      },
+      "intermediate": {
+        title: "Phonics Patterns & Blends",
+        content: `<p>Understanding phonics patterns helps us read and spell more complex words.</p>
+        
+<h3>Short and Long Vowel Sounds:</h3>
+<ul>
+  <li>Short 'a' as in cat, hat, mat</li>
+  <li>Long 'a' as in cake, make, take</li>
+  <li>Short 'e' as in pet, get, wet</li>
+  <li>Long 'e' as in me, see, tree</li>
+  <li>Short 'i' as in hit, sit, fit</li>
+  <li>Long 'i' as in like, bike, hike</li>
+  <li>Short 'o' as in hot, pot, not</li>
+  <li>Long 'o' as in note, boat, coat</li>
+  <li>Short 'u' as in but, cut, hut</li>
+  <li>Long 'u' as in cute, mute, tube</li>
+</ul>
+
+<h3>Consonant Blends:</h3>
+<p>Two or more consonants that are blended together, with each making its own sound.</p>
+<ul>
+  <li>bl: blue, black, block</li>
+  <li>cl: cloud, climb, clock</li>
+  <li>fl: fly, flower, flake</li>
+  <li>pl: play, plant, please</li>
+  <li>sl: sleep, slide, slow</li>
+  <li>st: stop, stand, star</li>
+  <li>fr: from, frog, friend</li>
+  <li>gr: great, green, grow</li>
+  <li>tr: try, tree, trip</li>
+</ul>
+
+<h3>Digraphs:</h3>
+<p>Two letters that make a single sound.</p>
+<ul>
+  <li>ch: chair, cheese, church</li>
+  <li>sh: ship, shop, shell</li>
+  <li>th: this, that, then</li>
+  <li>wh: what, when, where</li>
+  <li>ph: phone, photo, phrase</li>
+</ul>`,
+        videoUrl: "https://www.youtube.com/watch?v=Vb2ZXRh74WU",
+        ageLevel: "intermediate"
+      },
+      "advanced": {
+        title: "Word Roots & Etymology",
+        content: `<p>Understanding word roots, prefixes, and suffixes helps us decipher the meaning of unfamiliar words.</p>
+        
+<h3>Common Prefixes:</h3>
+<ul>
+  <li>un- (not): unhappy, unable, unfriendly</li>
+  <li>re- (again): replay, return, rewrite</li>
+  <li>dis- (not, opposite): disappear, disagree, dishonest</li>
+  <li>pre- (before): preview, prepare, prevent</li>
+  <li>in/im- (not): incorrect, impossible, inactive</li>
+  <li>sub- (under): submarine, subheading, subway</li>
+</ul>
+
+<h3>Common Suffixes:</h3>
+<ul>
+  <li>-er/-or (person who): teacher, actor, visitor</li>
+  <li>-tion/-sion (state or quality): action, tension, confusion</li>
+  <li>-able/-ible (can be done): readable, visible, possible</li>
+  <li>-ful (full of): careful, helpful, beautiful</li>
+  <li>-less (without): careless, homeless, fearless</li>
+  <li>-ment (result of): development, excitement, movement</li>
+</ul>
+
+<h3>Common Latin Roots:</h3>
+<ul>
+  <li>aud (to hear): audience, audible, auditorium</li>
+  <li>dict (to say): dictionary, predict, contradict</li>
+  <li>spec (to look): inspect, spectator, spectacles</li>
+  <li>port (to carry): transport, import, export</li>
+  <li>scrib/script (to write): describe, manuscript, inscription</li>
+</ul>
+
+<h3>Common Greek Roots:</h3>
+<ul>
+  <li>auto (self): automobile, automatic, autobiography</li>
+  <li>bio (life): biology, biography, biodiversity</li>
+  <li>geo (earth): geography, geology, geometry</li>
+  <li>photo (light): photograph, photosynthesis, photocopy</li>
+  <li>tele (far): telephone, television, telescope</li>
+</ul>`,
+        videoUrl: "https://www.youtube.com/watch?v=a0iVbFQN-p4",
+        ageLevel: "advanced"
+      }
     }
   },
   "science": {
     "Plants & Animals": {
-      title: "Plants & Animals",
-      content: `<p>Living things can be divided into plants and animals. They have different characteristics and needs.</p>
+      "beginner": {
+        title: "Plants & Animals",
+        content: `<p>Living things can be divided into plants and animals. They have different characteristics and needs.</p>
       
 <h3>Plant Characteristics:</h3>
 <ul>
@@ -186,14 +624,150 @@ const topicExplanations: Record<string, Record<string, TopicExplanation>> = {
   <li>Plants: Sugar cane, coconut palm, hibiscus</li>
   <li>Animals: Mauritius kestrel, Pink pigeon, Flying fox (bat)</li>
 </ul>`,
-      videoUrl: "https://www.youtube.com/watch?v=p51FiPO2_kQ"
+        videoUrl: "https://www.youtube.com/watch?v=p51FiPO2_kQ",
+        ageLevel: "beginner"
+      },
+      "intermediate": {
+        title: "Plant & Animal Classification",
+        content: `<p>Scientists classify living things into groups based on their characteristics.</p>
+        
+<h3>Plant Classification:</h3>
+<ul>
+  <li>Flowering Plants (Angiosperms): Plants that produce flowers and fruits
+    <ul>
+      <li>Examples: Mango trees, rose bushes, sugar cane</li>
+    </ul>
+  </li>
+  <li>Non-flowering Plants (Gymnosperms): Plants that don't produce flowers but produce seeds
+    <ul>
+      <li>Examples: Pine trees, cycads</li>
+    </ul>
+  </li>
+  <li>Ferns: Plants that reproduce using spores and have frond-like leaves
+    <ul>
+      <li>Examples: Tree ferns, bird's nest ferns</li>
+    </ul>
+  </li>
+  <li>Mosses: Small, simple plants without true roots
+    <ul>
+      <li>Examples: Moss growing on rocks or trees</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Animal Classification:</h3>
+<ul>
+  <li>Mammals: Warm-blooded animals with hair/fur that feed their young with milk
+    <ul>
+      <li>Examples: Mauritius fruit bat, dolphins, humans</li>
+    </ul>
+  </li>
+  <li>Birds: Warm-blooded animals with feathers, wings, and beaks
+    <ul>
+      <li>Examples: Mauritius kestrel, pink pigeon, paradise flycatcher</li>
+    </ul>
+  </li>
+  <li>Reptiles: Cold-blooded animals with scales and dry skin
+    <ul>
+      <li>Examples: Telfair's skink, Serpent Island snake</li>
+    </ul>
+  </li>
+  <li>Amphibians: Cold-blooded animals that live part of their life in water and part on land
+    <ul>
+      <li>Examples: Frogs, toads</li>
+    </ul>
+  </li>
+  <li>Fish: Cold-blooded animals with gills that live in water
+    <ul>
+      <li>Examples: Grouper, parrotfish, tuna</li>
+    </ul>
+  </li>
+  <li>Invertebrates: Animals without backbones
+    <ul>
+      <li>Examples: Corals, crabs, butterflies, snails</li>
+    </ul>
+  </li>
+</ul>`,
+        videoUrl: "https://www.youtube.com/watch?v=vJG698U2Mvo",
+        ageLevel: "intermediate"
+      },
+      "advanced": {
+        title: "Ecosystems & Adaptation",
+        content: `<p>Ecosystems are communities of living organisms interacting with each other and their environment. Adaptation is how organisms evolve to survive in their habitats.</p>
+        
+<h3>Ecosystems in Mauritius:</h3>
+<ul>
+  <li>Coral Reef Ecosystems: Diverse marine habitats surrounding much of Mauritius
+    <ul>
+      <li>Organisms: Corals, reef fish, sea turtles, mollusks</li>
+      <li>Interactions: Symbiotic relationships between corals and algae, predator-prey relationships</li>
+    </ul>
+  </li>
+  <li>Forest Ecosystems: Including the native forests of Black River Gorges
+    <ul>
+      <li>Organisms: Native trees, birds, fruit bats, insects</li>
+      <li>Interactions: Pollination, seed dispersal, decomposition</li>
+    </ul>
+  </li>
+  <li>Wetland Ecosystems: Areas where water and land meet
+    <ul>
+      <li>Organisms: Aquatic plants, waterfowl, fish, invertebrates</li>
+      <li>Interactions: Water filtration, nutrient cycling</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Types of Adaptation:</h3>
+<ul>
+  <li>Structural Adaptations: Physical features that help organisms survive
+    <ul>
+      <li>Example: The curved beak of the Mauritius kestrel helps it catch prey</li>
+      <li>Example: Mangrove trees have adapted roots that can grow in saltwater</li>
+    </ul>
+  </li>
+  <li>Behavioral Adaptations: Ways an organism acts to help it survive
+    <ul>
+      <li>Example: Some birds build nests in specific places to protect eggs from predators</li>
+      <li>Example: Mauritius fruit bats roost in large groups for protection</li>
+    </ul>
+  </li>
+  <li>Physiological Adaptations: Internal processes that help survival
+    <ul>
+      <li>Example: Some plants produce chemicals to deter insects from eating them</li>
+      <li>Example: Animals that can slow their metabolism during food scarcity</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Endemic Species of Mauritius:</h3>
+<p>Endemic species are found nowhere else in the world. Mauritius has many endemic species due to its isolation:</p>
+<ul>
+  <li>Mauritius kestrel: Adapted to hunt in forest environments</li>
+  <li>Echo parakeet: Has a specialized diet of native fruits and seeds</li>
+  <li>Mauritius fody: A bird with bright red plumage during breeding season</li>
+  <li>Trochetia plants: Flowering plants adapted to specific mountain microclimates</li>
+</ul>`,
+        videoUrl: "https://www.youtube.com/watch?v=V8vHYXj3uTM",
+        ageLevel: "advanced"
+      }
     }
   }
 };
 
-export const getTopicExplanation = (subjectId: string, topic: string): TopicExplanation | undefined => {
+// Updated function to get topic explanations based on age level
+export const getTopicExplanation = (subjectId: string, topic: string, ageLevel?: 'beginner' | 'intermediate' | 'advanced'): TopicExplanation | undefined => {
   if (topicExplanations[subjectId] && topicExplanations[subjectId][topic]) {
-    return topicExplanations[subjectId][topic];
+    // If age level is specified, return that specific explanation
+    if (ageLevel && topicExplanations[subjectId][topic][ageLevel]) {
+      return topicExplanations[subjectId][topic][ageLevel];
+    }
+    
+    // If no age level is specified or the specified age level doesn't exist,
+    // return the first available explanation
+    const availableAgeLevels = Object.keys(topicExplanations[subjectId][topic]);
+    if (availableAgeLevels.length > 0) {
+      return topicExplanations[subjectId][topic][availableAgeLevels[0] as 'beginner' | 'intermediate' | 'advanced'];
+    }
   }
   return undefined;
 };
