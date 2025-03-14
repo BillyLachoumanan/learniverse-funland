@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, ChevronUp, Bookmark, CheckCircle } from 'lucide-react';
+import { ChevronDown, ChevronUp, Bookmark, CheckCircle, Book } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { useUserProgress } from '../context/UserProgressContext';
+import { toast } from 'sonner';
 
 interface LearningMaterialProps {
   subjectId: string;
@@ -28,28 +29,52 @@ const LearningMaterial: React.FC<LearningMaterialProps> = ({
   
   const handleMarkCompleted = () => {
     markMaterialCompleted(subjectId, material.title);
+    toast.success('Learning material completed! Great job!', {
+      position: 'top-center',
+      duration: 3000,
+    });
   };
+
+  // Get the appropriate level color
+  const getLevelColor = () => {
+    switch(material.level) {
+      case 'beginner':
+        return {
+          bg: 'bg-green-100',
+          text: 'text-green-600',
+          border: 'border-green-200'
+        };
+      case 'intermediate':
+        return {
+          bg: 'bg-yellow-100',
+          text: 'text-yellow-600',
+          border: 'border-yellow-200'
+        };
+      case 'advanced':
+        return {
+          bg: 'bg-red-100',
+          text: 'text-red-600',
+          border: 'border-red-200'
+        };
+    }
+  };
+
+  const levelColor = getLevelColor();
 
   return (
     <motion.div 
-      className="w-full edu-card overflow-hidden mb-4"
+      className={`w-full edu-card overflow-hidden mb-4 border ${isExpanded ? levelColor.border : 'border-transparent'}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
       <div 
-        className="flex items-center justify-between p-4 cursor-pointer"
+        className={`flex items-center justify-between p-4 cursor-pointer ${isExpanded ? `${levelColor.bg} bg-opacity-30` : ''}`}
         onClick={handleToggle}
       >
         <div className="flex items-center">
-          <div className={`p-2 rounded-lg mr-3 ${
-            material.level === 'beginner' 
-              ? 'bg-green-100 text-green-600' 
-              : material.level === 'intermediate'
-                ? 'bg-yellow-100 text-yellow-600'
-                : 'bg-red-100 text-red-600'
-          }`}>
-            <Bookmark className="w-5 h-5" />
+          <div className={`p-2 rounded-lg mr-3 ${levelColor.bg} ${levelColor.text}`}>
+            {isExpanded ? <Book className="w-5 h-5" /> : <Bookmark className="w-5 h-5" />}
           </div>
           <div>
             <h3 className="font-bold text-lg">{material.title}</h3>
@@ -76,8 +101,8 @@ const LearningMaterial: React.FC<LearningMaterialProps> = ({
           exit={{ opacity: 0, height: 0 }}
           className="border-t border-gray-100 p-4"
         >
-          <div className="prose prose-sm md:prose-base max-w-none">
-            <ReactMarkdown>
+          <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none">
+            <ReactMarkdown className="react-markdown">
               {material.content}
             </ReactMarkdown>
           </div>
@@ -86,14 +111,14 @@ const LearningMaterial: React.FC<LearningMaterialProps> = ({
             {!isCompleted ? (
               <button
                 onClick={handleMarkCompleted}
-                className="edu-button-secondary text-sm"
+                className="edu-button-secondary text-sm hover:scale-105 transition-transform"
               >
                 Mark as Completed
               </button>
             ) : (
-              <span className="text-sm text-green-600 flex items-center">
+              <span className="text-sm text-green-600 flex items-center bg-green-50 py-2 px-3 rounded-md">
                 <CheckCircle className="w-4 h-4 mr-1" />
-                Completed
+                Well done! You've completed this section.
               </span>
             )}
           </div>

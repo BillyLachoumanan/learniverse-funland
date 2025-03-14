@@ -1,4 +1,3 @@
-
 import { BookOpen, Calculator, Atom, Languages, Globe, Clock } from 'lucide-react';
 
 export interface SubjectData {
@@ -52,93 +51,206 @@ export const subjects: SubjectData[] = [
         content: `# Counting and Numbers
         
 ## Numbers 1 to 100
-In Mauritius primary schools, young children begin by learning to count from 1 to 100.
 
-### How to count:
-- Counting forward: 1, 2, 3, 4, 5...
-- Counting backward: 100, 99, 98, 97...
+### Let's Learn About Numbers!
+Numbers are all around us! We use them every day to count objects, tell time, and measure things.
 
-### Number groups:
-- Ones (1-9): 1, 2, 3, 4, 5, 6, 7, 8, 9
-- Tens: 10, 20, 30, 40, 50, 60, 70, 80, 90
-- Numbers between: 11, 12, 13... and so on
+### Counting from 1 to 20:
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
 
-### Fun facts:
-- Numbers can represent how many objects we have
-- We use numbers every day for time, money, and measuring
-- In Mauritius, children learn to count in multiple languages!`
+### Try this fun activity:
+Count the fingers on your hands. How many do you have? That's right - 10!
+* 5 fingers on your left hand
+* 5 fingers on your right hand
+* 5 + 5 = 10 fingers total
+
+### Counting by 10s to 100:
+10, 20, 30, 40, 50, 60, 70, 80, 90, 100
+
+![Image of numbers arranged in tens blocks]
+
+### Real-Life Examples:
+* The number of students in your class
+* Your age in years
+* The number of rupees in your piggy bank
+* How many mangoes are in a basket
+
+### Fun Counting Game:
+When you're at the beach in Mauritius, try counting:
+* How many shells can you find?
+* How many waves come to shore in one minute?
+* How many seabirds you can see?
+
+Remember: Numbers help us understand how many things we have!`
       },
       {
         level: 'beginner',
         title: 'Basic Addition and Subtraction',
         content: `# Addition and Subtraction
         
-## Basic Operations
-At the foundation of mathematics are addition and subtraction.
+## Let's Add and Subtract!
 
-### Addition (+):
-- Addition means combining two or more numbers
-- Example: 5 + 3 = 8
-- We can use counters or fingers to help us add
+### Addition (+) means putting things together
+When we add, the number gets bigger!
 
-### Subtraction (-):
-- Subtraction means taking away or finding the difference
-- Example: 9 - 4 = 5
-- When we subtract, the number gets smaller
+#### Example 1:
+If you have 3 mangoes and your friend gives you 2 more, how many do you have now?
+3 + 2 = 5 mangoes
 
-### Number bonds:
-- Pairs of numbers that make 10: 1+9, 2+8, 3+7, 4+6, 5+5
-- Try finding other number bonds for 5, 15, or 20!`
+#### Example 2:
+Let's add using pictures:
+🍎 + 🍎 + 🍎 = 3 apples
+🍌 + 🍌 = 2 bananas
+All fruit together: 3 + 2 = 5 fruits
+
+### Subtraction (-) means taking away
+When we subtract, the number gets smaller!
+
+#### Example 1:
+If you have 7 sweets and you eat 3, how many are left?
+7 - 3 = 4 sweets
+
+#### Example 2:
+Let's subtract using pictures:
+🐢🐢🐢🐢🐢 (5 turtles)
+If 2 turtles swim away: 🐢🐢🐢 (3 turtles remain)
+5 - 2 = 3 turtles
+
+### Number Bonds to 10
+These are pairs of numbers that add up to 10:
+* 1 + 9 = 10
+* 2 + 8 = 10
+* 3 + 7 = 10
+* 4 + 6 = 10
+* 5 + 5 = 10
+
+### Try These Problems:
+1. You have 4 pencils. Your teacher gives you 3 more. How many pencils do you have now?
+2. There are 8 birds on a tree. 5 fly away. How many birds are left on the tree?
+3. You pick 6 flowers. Your sister picks 4 flowers. How many flowers do you have together?
+
+Remember: + means add, - means subtract!`
       },
       {
         level: 'intermediate',
         title: 'Multiplication Tables',
         content: `# Multiplication Tables
         
-## Learning to Multiply
-Multiplication is a faster way of adding the same number multiple times.
+## Multiplication is Repeated Addition
 
-### Multiplication as repeated addition:
-- 3 × 4 means 3 groups of 4
-- 3 × 4 = 4 + 4 + 4 = 12
+Multiplication helps us add the same number many times very quickly!
 
-### Basic multiplication tables (1-10):
-- 2 times table: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20
-- 5 times table: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50
-- 10 times table: 10, 20, 30, 40, 50, 60, 70, 80, 90, 100
+### What is Multiplication?
+* 3 × 4 means "3 groups of 4" or "4 added 3 times"
+* 3 × 4 = 4 + 4 + 4 = 12
 
-### Multiplication tricks:
-- Multiplying by 10: just add a zero (7 × 10 = 70)
-- Multiplying by 5: multiply by 10 then divide by 2
-- Multiplying by 9: multiply by 10 and subtract the original number`
+### Let's see multiplication with pictures:
+🍎🍎🍎  (1 row of 3 apples)
+🍎🍎🍎  (2 rows of 3 apples)
+🍎🍎🍎  (3 rows of 3 apples)
+🍎🍎🍎  (4 rows of 3 apples)
+
+This shows 4 × 3 = 12 apples total!
+
+### The 2 Times Table:
+2 × 1 = 2  (Two taken once is 2)
+2 × 2 = 4  (Two taken twice is 4)
+2 × 3 = 6  (Two taken three times is 6)
+2 × 4 = 8  (Two taken four times is 8)
+2 × 5 = 10 (Two taken five times is 10)
+2 × 6 = 12 (Two taken six times is 12)
+2 × 7 = 14 (Two taken seven times is 14)
+2 × 8 = 16 (Two taken eight times is 16)
+2 × 9 = 18 (Two taken nine times is 18)
+2 × 10 = 20 (Two taken ten times is 20)
+
+### The 5 Times Table:
+5 × 1 = 5
+5 × 2 = 10
+5 × 3 = 15
+5 × 4 = 20
+5 × 5 = 25
+5 × 6 = 30
+5 × 7 = 35
+5 × 8 = 40
+5 × 9 = 45
+5 × 10 = 50
+
+### Multiplication in Mauritius:
+If one sugar cane gives 8 cups of juice, how many cups of juice can you get from 5 sugar canes?
+5 × 8 = 40 cups of juice!
+
+### Easy Multiplication Tricks:
+* Multiplying by 10: Just add a zero! (7 × 10 = 70)
+* Multiplying by 5: First multiply by 10, then divide by 2
+  Example: 6 × 5 = (6 × 10) ÷ 2 = 60 ÷ 2 = 30
+* Multiplying by 2: Just double the number!
+  Example: 9 × 2 = 9 + 9 = 18
+
+### Practice at Home:
+Count objects in your house in groups, like:
+* How many eggs are in 3 egg cartons if each has 6 eggs? (3 × 6 = 18)
+* If each hand has 5 fingers, how many fingers do 4 people have? (4 × 10 = 40)`
       },
       {
         level: 'advanced',
         title: 'Fractions and Decimals',
         content: `# Fractions and Decimals
         
-## Understanding Parts of a Whole
-Fractions and decimals represent parts of a whole number.
+## Parts of a Whole
 
-### Fractions:
-- Numerator (top number): how many parts we have
-- Denominator (bottom number): total number of equal parts
-- Examples: 1/2 (one-half), 3/4 (three-quarters)
+### What are Fractions?
+A fraction shows part of a whole. It has:
+* **Numerator** (top number): How many parts we have
+* **Denominator** (bottom number): Total equal parts in the whole
 
-### Types of fractions:
-- Proper fractions: numerator smaller than denominator (1/4)
-- Improper fractions: numerator larger than denominator (5/3)
-- Mixed numbers: whole number and proper fraction (1 1/2)
+### Examples with Pictures:
+🍕🍕🍕🍕 (A pizza cut into 4 equal slices)
+If you eat 1 slice, you've eaten 1/4 of the pizza.
+If you eat 3 slices, you've eaten 3/4 of the pizza.
 
-### Converting between fractions and decimals:
-- 1/2 = 0.5
-- 1/4 = 0.25
-- 3/4 = 0.75
+#### More Examples:
+* Half of a mango = 1/2
+* Three-quarters of a chocolate bar = 3/4
+* Two-thirds of a glass of water = 2/3
 
-### Practical uses:
-- Sharing food equally among friends
-- Measuring ingredients for recipes
-- Understanding discounts when shopping in Port Louis markets`
+### Types of Fractions:
+* **Proper fractions**: Numerator smaller than denominator (1/2, 3/4)
+* **Improper fractions**: Numerator larger than denominator (5/3, 7/4)
+* **Mixed numbers**: Whole number and proper fraction (1 1/2, 2 3/4)
+
+### Fractions in Everyday Life in Mauritius:
+* Recipe for dholl puri needs 1/2 cup of split peas
+* A journey from Port Louis to Grand Baie takes 3/4 hour
+* 1/4 kg of vegetables at the market
+
+### Decimals - Another Way to Show Parts
+Decimals use a point to separate whole numbers from parts of a whole.
+
+#### Converting Simple Fractions to Decimals:
+* 1/2 = 0.5
+* 1/4 = 0.25
+* 3/4 = 0.75
+* 1/10 = 0.1
+* 7/10 = 0.7
+
+### Decimal Place Value:
+* Tenths: 0.1, 0.2, 0.3...
+* Hundredths: 0.01, 0.02, 0.03...
+* Thousandths: 0.001, 0.002, 0.003...
+
+### Money Uses Decimals:
+* 1 Rupee = Rs 1.00
+* 50 cents = Rs 0.50
+* 25 cents = Rs 0.25
+
+### Try These Problems:
+1. If you eat 2 slices of a pizza that has 8 equal slices, what fraction of the pizza did you eat?
+2. Convert 3/5 to a decimal.
+3. Which is larger: 0.7 or 2/3?
+4. If a recipe calls for 3/4 cup of sugar and you're making half the recipe, how much sugar do you need?
+
+Remember: Fractions and decimals are just different ways to show parts of a whole!`
       }
     ]
   },
