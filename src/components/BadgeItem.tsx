@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, Star, Trophy, BookOpen, FlaskConical, CheckCircle } from 'lucide-react';
@@ -8,7 +9,7 @@ interface BadgeItemProps {
   icon: string;
   description: string;
   earned: boolean;
-  earnedAt?: Date;
+  earnedAt?: number;
 }
 
 const BadgeItem: React.FC<BadgeItemProps> = ({ 

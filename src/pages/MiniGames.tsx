@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import MainLayout from '../components/MainLayout';
@@ -71,7 +70,6 @@ const MiniGames = () => {
   
   // Unscramble a word
   function unscrambleWord(scrambled: string) {
-    // Find the original word from our list
     return words.find(word => {
       return word.split('').sort().join('') === scrambled.split('').sort().join('');
     }) || '';
@@ -89,7 +87,6 @@ const MiniGames = () => {
       setShowReward(true);
       addPoints(10);
       
-      // Generate a new problem after a delay
       setTimeout(() => {
         setMathProblem(generateMathProblem());
         setMathAnswer('');
@@ -98,7 +95,6 @@ const MiniGames = () => {
     } else {
       setMathResult('incorrect');
       
-      // Clear result after a delay
       setTimeout(() => {
         setMathResult(null);
       }, 1500);
@@ -114,7 +110,6 @@ const MiniGames = () => {
       setShowReward(true);
       addPoints(15);
       
-      // Generate a new word after a delay
       setTimeout(() => {
         const newOriginalWord = words[Math.floor(Math.random() * words.length)];
         setOriginalWord(newOriginalWord);
@@ -125,7 +120,6 @@ const MiniGames = () => {
     } else {
       setWordResult('incorrect');
       
-      // Clear result after a delay
       setTimeout(() => {
         setWordResult(null);
       }, 1500);

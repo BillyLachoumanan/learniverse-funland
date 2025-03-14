@@ -70,9 +70,9 @@ const Profile = () => {
             </div>
             
             <div className="space-y-3">
-              {Object.values(subjects).map((subject) => (
+              {Object.entries(subjects).map(([id, subject]) => (
                 <ProgressBar 
-                  key={subject.id}
+                  key={id}
                   progress={subject.completed} 
                   total={subject.total} 
                   label={subject.name} 
@@ -118,7 +118,15 @@ const Profile = () => {
                 <h3 className="font-medium text-gray-600 mb-3">Earned Badges</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   {earnedBadges.map((badge) => (
-                    <BadgeItem key={badge.id} {...badge} />
+                    <BadgeItem 
+                      key={badge.id}
+                      id={badge.id}
+                      name={badge.name}
+                      description={badge.description}
+                      icon={badge.icon}
+                      earned={badge.earned}
+                      earnedAt={badge.earnedAt}
+                    />
                   ))}
                 </div>
               </>
@@ -129,7 +137,15 @@ const Profile = () => {
                 <h3 className="font-medium text-gray-600 mb-3">Badges to Earn</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {unearnedBadges.map((badge) => (
-                    <BadgeItem key={badge.id} {...badge} />
+                    <BadgeItem
+                      key={badge.id}
+                      id={badge.id}
+                      name={badge.name}
+                      description={badge.description}
+                      icon={badge.icon}
+                      earned={badge.earned}
+                      earnedAt={badge.earnedAt}
+                    />
                   ))}
                 </div>
               </>

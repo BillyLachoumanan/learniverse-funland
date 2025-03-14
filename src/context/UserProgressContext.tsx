@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Subject progress tracking
 interface SubjectProgress {
+  id: string;
+  name: string;
   completed: number;
   total: number;
 }
@@ -32,6 +34,7 @@ interface Badge {
   name: string;
   description: string;
   icon: string;
+  earned?: boolean;
   earnedAt?: number;
 }
 
@@ -41,23 +44,25 @@ export interface UserProgressContextType {
   completedMaterials: CompletedMaterial[];
   badges: Badge[];
   points: number;
+  level: number;
   completeActivity: (subjectId: string, quizId: string, score?: number) => void;
   markMaterialCompleted: (subjectId: string, materialTitle: string) => void;
   isLearningMaterialCompleted: (subjectId: string, materialTitle: string) => boolean;
   resetProgress: () => void;
   earnBadge: (badgeId: string) => boolean;
   hasBadge: (badgeId: string) => boolean;
+  addPoints: (amount: number) => void;
 }
 
 const UserProgressContext = createContext<UserProgressContextType | undefined>(undefined);
 
 const defaultSubjects: SubjectsProgress = {
-  'mathematics': { completed: 0, total: 5 },
-  'english': { completed: 0, total: 5 },
-  'french': { completed: 0, total: 5 },
-  'science': { completed: 0, total: 5 },
-  'history': { completed: 0, total: 4 },
-  'geography': { completed: 0, total: 4 },
+  'mathematics': { id: 'mathematics', name: 'Mathematics', completed: 0, total: 5 },
+  'english': { id: 'english', name: 'English', completed: 0, total: 5 },
+  'french': { id: 'french', name: 'French', completed: 0, total: 5 },
+  'science': { id: 'science', name: 'Science', completed: 0, total: 5 },
+  'history': { id: 'history', name: 'History', completed: 0, total: 4 },
+  'geography': { id: 'geography', name: 'Geography', completed: 0, total: 4 },
 };
 
 const availableBadges: Badge[] = [
@@ -66,38 +71,49 @@ const availableBadges: Badge[] = [
     name: 'First Quiz',
     description: 'Completed your first quiz',
     icon: 'Trophy',
+    earned: false
   },
   {
     id: 'perfect-score',
     name: 'Perfect Score',
     description: 'Got 100% on a quiz',
     icon: 'Award',
+    earned: false
   },
   {
     id: 'subject-master',
     name: 'Subject Master',
     description: 'Completed all activities in a subject',
     icon: 'Medal',
+    earned: false
   },
   {
     id: 'study-streak',
     name: 'Study Streak',
     description: 'Completed activities 3 days in a row',
     icon: 'Flame',
+    earned: false
   },
   {
     id: 'first-material',
     name: 'Learning Pioneer',
     description: 'Completed your first learning material',
-    icon: 'BookOpen', 
+    icon: 'BookOpen',
+    earned: false
   },
   {
     id: 'avid-learner',
     name: 'Avid Learner',
     description: 'Completed 10 learning materials',
     icon: 'GraduationCap',
+    earned: false
   }
 ];
+
+// Calculate level based on points
+const calculateLevel = (points: number): number => {
+  return Math.floor(points / 100) + 1;
+};
 
 export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Load from localStorage or use defaults
@@ -126,6 +142,9 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return saved ? parseInt(saved, 10) : 0;
   });
   
+  // Calculate level based on points
+  const level = calculateLevel(points);
+  
   // Save to localStorage whenever state changes
   useEffect(() => {
     localStorage.setItem('subjects', JSON.stringify(subjects));
@@ -146,6 +165,11 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
   useEffect(() => {
     localStorage.setItem('points', points.toString());
   }, [points]);
+  
+  // Add points directly
+  const addPoints = (amount: number) => {
+    setPoints(prev => prev + amount);
+  };
   
   // Mark a quiz as completed
   const completeActivity = (subjectId: string, quizId: string, score?: number) => {
@@ -175,7 +199,7 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
       }));
       
       // Award points
-      setPoints(prev => prev + 10);
+      addPoints(10);
       
       // Check for badges
       if (completedQuizzes.length === 0) {
@@ -207,7 +231,7 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
       setCompletedMaterials([...completedMaterials, newMaterial]);
       
       // Award points
-      setPoints(prev => prev + 5);
+      addPoints(5);
       
       // Check for badges
       if (completedMaterials.length === 0) {
@@ -247,15 +271,16 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const earnBadge = (badgeId: string): boolean => {
     const badgeIndex = badges.findIndex(badge => badge.id === badgeId);
     
-    if (badgeIndex >= 0 && !badges[badgeIndex].earnedAt) {
+    if (badgeIndex >= 0 && !badges[badgeIndex].earned) {
       const updatedBadges = [...badges];
       updatedBadges[badgeIndex] = {
         ...updatedBadges[badgeIndex],
+        earned: true,
         earnedAt: Date.now()
       };
       
       setBadges(updatedBadges);
-      setPoints(prev => prev + 20); // Bonus points for earning a badge
+      addPoints(20); // Bonus points for earning a badge
       return true;
     }
     
@@ -264,7 +289,7 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
   
   // Check if user has a specific badge
   const hasBadge = (badgeId: string): boolean => {
-    return badges.some(badge => badge.id === badgeId && badge.earnedAt !== undefined);
+    return badges.some(badge => badge.id === badgeId && badge.earned);
   };
   
   return (
@@ -275,12 +300,14 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
         completedMaterials,
         badges,
         points,
+        level,
         completeActivity,
         markMaterialCompleted,
         isLearningMaterialCompleted,
         resetProgress,
         earnBadge,
-        hasBadge
+        hasBadge,
+        addPoints
       }}
     >
       {children}
