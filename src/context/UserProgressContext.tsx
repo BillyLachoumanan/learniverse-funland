@@ -1,249 +1,76 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { subjects } from '../data/subjectData';
 
-// Subject progress tracking
-interface SubjectProgress {
-  id: string;
-  name: string;
+// Define progress for each subject
+export interface SubjectProgress {
   completed: number;
   total: number;
 }
 
-interface SubjectsProgress {
-  [key: string]: SubjectProgress;
-}
-
-// Quiz completion tracking
-interface CompletedQuiz {
-  subjectId: string;
-  quizId: string;
-  timestamp: number;
-  score?: number;
-}
-
-// Learning materials tracking
-interface CompletedMaterial {
-  subjectId: string;
-  materialTitle: string;
-  timestamp: number;
-}
-
-// Badges
-interface Badge {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  earned?: boolean;
-  earnedAt?: number;
-}
-
+// Define the user progress context type
 export interface UserProgressContextType {
-  subjects: SubjectsProgress;
-  completedQuizzes: CompletedQuiz[];
-  completedMaterials: CompletedMaterial[];
-  badges: Badge[];
-  points: number;
-  level: number;
-  completeActivity: (subjectId: string, quizId: string, score?: number) => void;
+  subjects: Record<string, SubjectProgress>;
+  completedMaterials: { subjectId: string; materialTitle: string }[];
+  reviewedTopics: { subjectId: string; topicName: string }[];
   markMaterialCompleted: (subjectId: string, materialTitle: string) => void;
   isLearningMaterialCompleted: (subjectId: string, materialTitle: string) => boolean;
-  resetProgress: () => void;
-  earnBadge: (badgeId: string) => boolean;
-  hasBadge: (badgeId: string) => boolean;
-  addPoints: (amount: number) => void;
+  markTopicReviewed: (subjectId: string, topicName: string) => void;
+  isTopicReviewed: (subjectId: string, topicName: string) => boolean;
 }
 
-const UserProgressContext = createContext<UserProgressContextType | undefined>(undefined);
+// Create the context with default values
+const UserProgressContext = createContext<UserProgressContextType>({
+  subjects: {},
+  completedMaterials: [],
+  reviewedTopics: [],
+  markMaterialCompleted: () => {},
+  isLearningMaterialCompleted: () => false,
+  markTopicReviewed: () => {},
+  isTopicReviewed: () => false,
+});
 
-const defaultSubjects: SubjectsProgress = {
-  'mathematics': { id: 'mathematics', name: 'Mathematics', completed: 0, total: 5 },
-  'english': { id: 'english', name: 'English', completed: 0, total: 5 },
-  'french': { id: 'french', name: 'French', completed: 0, total: 5 },
-  'science': { id: 'science', name: 'Science', completed: 0, total: 5 },
-  'history': { id: 'history', name: 'History', completed: 0, total: 4 },
-  'geography': { id: 'geography', name: 'Geography', completed: 0, total: 4 },
-};
+// Hook to use the user progress context
+export const useUserProgress = () => useContext(UserProgressContext);
 
-const availableBadges: Badge[] = [
-  {
-    id: 'first-quiz',
-    name: 'First Quiz',
-    description: 'Completed your first quiz',
-    icon: 'Trophy',
-    earned: false
-  },
-  {
-    id: 'perfect-score',
-    name: 'Perfect Score',
-    description: 'Got 100% on a quiz',
-    icon: 'Award',
-    earned: false
-  },
-  {
-    id: 'subject-master',
-    name: 'Subject Master',
-    description: 'Completed all activities in a subject',
-    icon: 'Medal',
-    earned: false
-  },
-  {
-    id: 'study-streak',
-    name: 'Study Streak',
-    description: 'Completed activities 3 days in a row',
-    icon: 'Flame',
-    earned: false
-  },
-  {
-    id: 'first-material',
-    name: 'Learning Pioneer',
-    description: 'Completed your first learning material',
-    icon: 'BookOpen',
-    earned: false
-  },
-  {
-    id: 'avid-learner',
-    name: 'Avid Learner',
-    description: 'Completed 10 learning materials',
-    icon: 'GraduationCap',
-    earned: false
-  }
-];
-
-// Calculate level based on points
-const calculateLevel = (points: number): number => {
-  return Math.floor(points / 100) + 1;
-};
-
+// Provider component
 export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Load from localStorage or use defaults
-  const [subjects, setSubjects] = useState<SubjectsProgress>(() => {
-    const saved = localStorage.getItem('subjects');
-    return saved ? JSON.parse(saved) : defaultSubjects;
-  });
-  
-  const [completedQuizzes, setCompletedQuizzes] = useState<CompletedQuiz[]>(() => {
-    const saved = localStorage.getItem('completedQuizzes');
-    return saved ? JSON.parse(saved) : [];
-  });
-  
-  const [completedMaterials, setCompletedMaterials] = useState<CompletedMaterial[]>(() => {
-    const saved = localStorage.getItem('completedMaterials');
-    return saved ? JSON.parse(saved) : [];
-  });
-  
-  const [badges, setBadges] = useState<Badge[]>(() => {
-    const saved = localStorage.getItem('badges');
-    return saved ? JSON.parse(saved) : availableBadges.map(badge => ({...badge}));
-  });
-  
-  const [points, setPoints] = useState<number>(() => {
-    const saved = localStorage.getItem('points');
-    return saved ? parseInt(saved, 10) : 0;
-  });
-  
-  // Calculate level based on points
-  const level = calculateLevel(points);
-  
-  // Save to localStorage whenever state changes
-  useEffect(() => {
-    localStorage.setItem('subjects', JSON.stringify(subjects));
-  }, [subjects]);
-  
-  useEffect(() => {
-    localStorage.setItem('completedQuizzes', JSON.stringify(completedQuizzes));
-  }, [completedQuizzes]);
-  
-  useEffect(() => {
-    localStorage.setItem('completedMaterials', JSON.stringify(completedMaterials));
-  }, [completedMaterials]);
-  
-  useEffect(() => {
-    localStorage.setItem('badges', JSON.stringify(badges));
-  }, [badges]);
-  
-  useEffect(() => {
-    localStorage.setItem('points', points.toString());
-  }, [points]);
-  
-  // Add points directly
-  const addPoints = (amount: number) => {
-    setPoints(prev => prev + amount);
-  };
-  
-  // Mark a quiz as completed
-  const completeActivity = (subjectId: string, quizId: string, score?: number) => {
-    // Check if already completed
-    const alreadyCompleted = completedQuizzes.some(
-      quiz => quiz.subjectId === subjectId && quiz.quizId === quizId
-    );
-    
-    // If not completed, add to completedQuizzes
-    if (!alreadyCompleted) {
-      const newQuiz: CompletedQuiz = {
-        subjectId,
-        quizId,
-        timestamp: Date.now(),
-        score
+  // Initialize subject progress
+  const [subjectProgress, setSubjectProgress] = useState<Record<string, SubjectProgress>>(() => {
+    const initialProgress: Record<string, SubjectProgress> = {};
+    subjects.forEach(subject => {
+      initialProgress[subject.id] = {
+        completed: 0,
+        total: subject.learningMaterials.length + subject.topics.length,
       };
-      
-      setCompletedQuizzes([...completedQuizzes, newQuiz]);
-      
-      // Update subject progress
-      setSubjects(prev => ({
-        ...prev,
-        [subjectId]: {
-          ...prev[subjectId],
-          completed: prev[subjectId].completed + 1
-        }
-      }));
-      
-      // Award points
-      addPoints(10);
-      
-      // Check for badges
-      if (completedQuizzes.length === 0) {
-        earnBadge('first-quiz');
-      }
-      
-      // Check if all activities in the subject are completed
-      if (subjects[subjectId].completed + 1 === subjects[subjectId].total) {
-        earnBadge('subject-master');
-      }
-    }
-  };
+    });
+    return initialProgress;
+  });
+
+  // Track completed learning materials
+  const [completedMaterials, setCompletedMaterials] = useState<{ subjectId: string; materialTitle: string }[]>([]);
   
+  // Track reviewed topics
+  const [reviewedTopics, setReviewedTopics] = useState<{ subjectId: string; topicName: string }[]>([]);
+
   // Mark a learning material as completed
   const markMaterialCompleted = (subjectId: string, materialTitle: string) => {
     // Check if already completed
-    const alreadyCompleted = completedMaterials.some(
-      material => material.subjectId === subjectId && material.materialTitle === materialTitle
-    );
-    
-    // If not completed, add to completedMaterials
-    if (!alreadyCompleted) {
-      const newMaterial: CompletedMaterial = {
-        subjectId,
-        materialTitle,
-        timestamp: Date.now()
-      };
-      
-      setCompletedMaterials([...completedMaterials, newMaterial]);
-      
-      // Award points
-      addPoints(5);
-      
-      // Check for badges
-      if (completedMaterials.length === 0) {
-        earnBadge('first-material');
-      }
-      
-      if (completedMaterials.length + 1 >= 10) {
-        earnBadge('avid-learner');
-      }
+    if (isLearningMaterialCompleted(subjectId, materialTitle)) {
+      return;
     }
+
+    // Add to completed materials
+    setCompletedMaterials(prev => [...prev, { subjectId, materialTitle }]);
+    
+    // Update subject progress
+    setSubjectProgress(prev => {
+      const subject = { ...prev[subjectId] };
+      subject.completed = subject.completed + 1;
+      return { ...prev, [subjectId]: subject };
+    });
   };
-  
+
   // Check if a learning material is completed
   const isLearningMaterialCompleted = (subjectId: string, materialTitle: string): boolean => {
     return completedMaterials.some(
@@ -251,74 +78,70 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
     );
   };
   
-  // Reset all progress
-  const resetProgress = () => {
-    setSubjects(defaultSubjects);
-    setCompletedQuizzes([]);
-    setCompletedMaterials([]);
-    setBadges(availableBadges.map(badge => ({...badge})));
-    setPoints(0);
+  // Mark a topic as reviewed
+  const markTopicReviewed = (subjectId: string, topicName: string) => {
+    // Check if already reviewed
+    if (isTopicReviewed(subjectId, topicName)) {
+      return;
+    }
+
+    // Add to reviewed topics
+    setReviewedTopics(prev => [...prev, { subjectId, topicName }]);
     
-    // Clear localStorage
-    localStorage.removeItem('subjects');
-    localStorage.removeItem('completedQuizzes');
-    localStorage.removeItem('completedMaterials');
-    localStorage.removeItem('badges');
-    localStorage.removeItem('points');
+    // Update subject progress
+    setSubjectProgress(prev => {
+      const subject = { ...prev[subjectId] };
+      subject.completed = subject.completed + 1;
+      return { ...prev, [subjectId]: subject };
+    });
   };
-  
-  // Award a badge if not already earned
-  const earnBadge = (badgeId: string): boolean => {
-    const badgeIndex = badges.findIndex(badge => badge.id === badgeId);
+
+  // Check if a topic is reviewed
+  const isTopicReviewed = (subjectId: string, topicName: string): boolean => {
+    return reviewedTopics.some(
+      topic => topic.subjectId === subjectId && topic.topicName === topicName
+    );
+  };
+
+  // Load progress from localStorage
+  useEffect(() => {
+    const savedProgress = localStorage.getItem('subjectProgress');
+    const savedMaterials = localStorage.getItem('completedMaterials');
+    const savedTopics = localStorage.getItem('reviewedTopics');
     
-    if (badgeIndex >= 0 && !badges[badgeIndex].earned) {
-      const updatedBadges = [...badges];
-      updatedBadges[badgeIndex] = {
-        ...updatedBadges[badgeIndex],
-        earned: true,
-        earnedAt: Date.now()
-      };
-      
-      setBadges(updatedBadges);
-      addPoints(20); // Bonus points for earning a badge
-      return true;
+    if (savedProgress) {
+      setSubjectProgress(JSON.parse(savedProgress));
     }
     
-    return false;
-  };
-  
-  // Check if user has a specific badge
-  const hasBadge = (badgeId: string): boolean => {
-    return badges.some(badge => badge.id === badgeId && badge.earned);
-  };
-  
+    if (savedMaterials) {
+      setCompletedMaterials(JSON.parse(savedMaterials));
+    }
+    
+    if (savedTopics) {
+      setReviewedTopics(JSON.parse(savedTopics));
+    }
+  }, []);
+
+  // Save progress to localStorage
+  useEffect(() => {
+    localStorage.setItem('subjectProgress', JSON.stringify(subjectProgress));
+    localStorage.setItem('completedMaterials', JSON.stringify(completedMaterials));
+    localStorage.setItem('reviewedTopics', JSON.stringify(reviewedTopics));
+  }, [subjectProgress, completedMaterials, reviewedTopics]);
+
   return (
     <UserProgressContext.Provider
       value={{
-        subjects,
-        completedQuizzes,
+        subjects: subjectProgress,
         completedMaterials,
-        badges,
-        points,
-        level,
-        completeActivity,
+        reviewedTopics,
         markMaterialCompleted,
         isLearningMaterialCompleted,
-        resetProgress,
-        earnBadge,
-        hasBadge,
-        addPoints
+        markTopicReviewed,
+        isTopicReviewed,
       }}
     >
       {children}
     </UserProgressContext.Provider>
   );
-};
-
-export const useUserProgress = (): UserProgressContextType => {
-  const context = useContext(UserProgressContext);
-  if (context === undefined) {
-    throw new Error('useUserProgress must be used within a UserProgressProvider');
-  }
-  return context;
 };

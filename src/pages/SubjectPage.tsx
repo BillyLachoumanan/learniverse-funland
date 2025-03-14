@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -7,7 +6,8 @@ import { ArrowLeft, Book, CheckCircle, UserRound, GraduationCap, Bookmark } from
 import MainLayout from '../components/MainLayout';
 import ProgressBar from '../components/ProgressBar';
 import LearningMaterial from '../components/LearningMaterial';
-import { getSubjectById, getSubjectIcon } from '../data/subjectData';
+import TopicCard from '../components/TopicCard';
+import { getSubjectById, getSubjectIcon, getTopicExplanation } from '../data/subjectData';
 import { getQuizzesBySubject } from '../data/quizData';
 import { useUserProgress } from '../context/UserProgressContext';
 
@@ -130,17 +130,14 @@ const SubjectPage = () => {
       >
         <h2 className="text-2xl font-bold mb-4">Topics</h2>
         {subject.topics && subject.topics.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             {subject.topics.map((topic, index) => (
-              <div 
+              <TopicCard 
                 key={index} 
-                className="edu-card flex items-center p-4"
-              >
-                <div className="p-2 rounded-lg bg-edu-blue/10 mr-3">
-                  <Book className="w-5 h-5 text-edu-blue" />
-                </div>
-                <span className="font-medium">{topic}</span>
-              </div>
+                subjectId={subject.id}
+                topic={topic}
+                explanation={getTopicExplanation(subject.id, topic)}
+              />
             ))}
           </div>
         ) : (

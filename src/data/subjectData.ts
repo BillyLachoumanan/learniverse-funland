@@ -16,8 +16,187 @@ export interface SubjectData {
     level: 'beginner' | 'intermediate' | 'advanced';
     title: string;
     content: string;
+    videoUrl?: string;
   }[];
 }
+
+export interface TopicExplanation {
+  title: string;
+  content: string;
+  videoUrl?: string;
+}
+
+const topicExplanations: Record<string, Record<string, TopicExplanation>> = {
+  "mathematics": {
+    "Numbers & Counting": {
+      title: "Numbers & Counting",
+      content: `<p>Numbers are symbols that represent quantity. We use them to count objects, measure things, and solve problems.</p>
+      
+<h3>How to Count from 1 to 10:</h3>
+<ol>
+  <li>Start with 1</li>
+  <li>Then 2, 3, 4, and so on</li>
+  <li>Until you reach 10</li>
+</ol>
+
+<h3>Fun Examples:</h3>
+<ul>
+  <li>Count your fingers (you have 10!)</li>
+  <li>Count pencils in your pencil box</li>
+  <li>Count steps as you walk upstairs</li>
+</ul>
+
+<h3>Practice:</h3>
+<p>Try counting the following:</p>
+<ul>
+  <li>How many books are on your shelf?</li>
+  <li>How many chairs are in your classroom?</li>
+  <li>How many days are in a week? (Hint: 7!)</li>
+</ul>`,
+      videoUrl: "https://www.youtube.com/watch?v=bGetqbqDVaA"
+    },
+    "Addition & Subtraction": {
+      title: "Addition & Subtraction",
+      content: `<p>Addition means putting things together, and subtraction means taking things away.</p>
+      
+<h3>Addition Examples:</h3>
+<ul>
+  <li>If you have 3 apples and get 2 more: 3 + 2 = 5 apples</li>
+  <li>If you see 4 birds and then 3 more fly in: 4 + 3 = 7 birds</li>
+</ul>
+
+<h3>Subtraction Examples:</h3>
+<ul>
+  <li>If you have 8 sweets and eat 3: 8 - 3 = 5 sweets left</li>
+  <li>If there are 10 children and 4 leave: 10 - 4 = 6 children remain</li>
+</ul>
+
+<h3>Try these problems:</h3>
+<ol>
+  <li>If you have 5 pencils and your friend gives you 3 more, how many do you have?</li>
+  <li>If you have 7 books and give 2 to your teacher, how many do you have left?</li>
+</ol>`,
+      videoUrl: "https://www.youtube.com/watch?v=AuX7nPBqDts"
+    },
+    "Multiplication & Division": {
+      title: "Multiplication & Division",
+      content: `<p>Multiplication is a faster way to add the same number multiple times. Division is sharing into equal groups.</p>
+      
+<h3>Multiplication Examples:</h3>
+<ul>
+  <li>3 × 4 means "3 groups of 4" or "4 + 4 + 4 = 12"</li>
+  <li>5 × 2 means "5 groups of 2" or "2 + 2 + 2 + 2 + 2 = 10"</li>
+</ul>
+
+<h3>Division Examples:</h3>
+<ul>
+  <li>8 ÷ 2 means "share 8 things into 2 equal groups" (4 in each group)</li>
+  <li>10 ÷ 5 means "share 10 things into 5 equal groups" (2 in each group)</li>
+</ul>
+
+<h3>Real-life situations:</h3>
+<ul>
+  <li>If 1 chocolate bar costs Rs 15, how much do 3 chocolate bars cost? (3 × 15 = 45 rupees)</li>
+  <li>If you have 12 candies and want to share them equally with 3 friends, how many candies does each friend get? (12 ÷ 3 = 4 candies each)</li>
+</ul>`,
+      videoUrl: "https://www.youtube.com/watch?v=gzDPuWKkIZM"
+    },
+    "Geometry & Shapes": {
+      title: "Geometry & Shapes",
+      content: `<p>Geometry is the study of shapes and how they relate to each other and to space.</p>
+      
+<h3>2D Shapes:</h3>
+<ul>
+  <li>Circle: A round shape with no corners</li>
+  <li>Triangle: A shape with 3 sides and 3 corners</li>
+  <li>Square: A shape with 4 equal sides and 4 corners</li>
+  <li>Rectangle: A shape with 4 sides (2 long, 2 short) and 4 corners</li>
+</ul>
+
+<h3>3D Shapes:</h3>
+<ul>
+  <li>Sphere: A round ball shape (like a football)</li>
+  <li>Cube: A box with 6 square faces (like a dice)</li>
+  <li>Cylinder: A shape with circular ends and a curved side (like a can)</li>
+</ul>
+
+<h3>Find shapes around you:</h3>
+<ul>
+  <li>A plate is a circle</li>
+  <li>A book is a rectangular prism</li>
+  <li>A pyramid-shaped roof has triangular faces</li>
+</ul>`,
+      videoUrl: "https://www.youtube.com/watch?v=IaoZhhx_I9s"
+    }
+  },
+  "english": {
+    "Alphabet & Phonics": {
+      title: "Alphabet & Phonics",
+      content: `<p>The English alphabet has 26 letters. Phonics helps us understand the sounds these letters make.</p>
+      
+<h3>Vowels and Consonants:</h3>
+<ul>
+  <li>Vowels: A, E, I, O, U</li>
+  <li>Consonants: All other letters</li>
+</ul>
+
+<h3>Letter Sounds:</h3>
+<ul>
+  <li>'a' as in apple or ant</li>
+  <li>'b' as in ball or bat</li>
+  <li>'c' as in cat or cake</li>
+</ul>
+
+<h3>Try sounding out these words:</h3>
+<ul>
+  <li>cat: c-a-t</li>
+  <li>dog: d-o-g</li>
+  <li>sun: s-u-n</li>
+</ul>
+
+<h3>Fun Alphabet Games:</h3>
+<ul>
+  <li>Name an animal for each letter of the alphabet</li>
+  <li>Find objects around your house that start with different letters</li>
+</ul>`,
+      videoUrl: "https://www.youtube.com/watch?v=hq3yfQnllfQ"
+    }
+  },
+  "science": {
+    "Plants & Animals": {
+      title: "Plants & Animals",
+      content: `<p>Living things can be divided into plants and animals. They have different characteristics and needs.</p>
+      
+<h3>Plant Characteristics:</h3>
+<ul>
+  <li>Plants make their own food using sunlight</li>
+  <li>Most plants have roots, stems, and leaves</li>
+  <li>Plants cannot move from place to place</li>
+</ul>
+
+<h3>Animal Characteristics:</h3>
+<ul>
+  <li>Animals need to eat plants or other animals for food</li>
+  <li>Animals can move from place to place</li>
+  <li>Animals respond quickly to their environment</li>
+</ul>
+
+<h3>Examples in Mauritius:</h3>
+<ul>
+  <li>Plants: Sugar cane, coconut palm, hibiscus</li>
+  <li>Animals: Mauritius kestrel, Pink pigeon, Flying fox (bat)</li>
+</ul>`,
+      videoUrl: "https://www.youtube.com/watch?v=p51FiPO2_kQ"
+    }
+  }
+};
+
+export const getTopicExplanation = (subjectId: string, topic: string): TopicExplanation | undefined => {
+  if (topicExplanations[subjectId] && topicExplanations[subjectId][topic]) {
+    return topicExplanations[subjectId][topic];
+  }
+  return undefined;
+};
 
 export const subjects: SubjectData[] = [
   {
@@ -81,7 +260,8 @@ When you're at the beach in Mauritius, try counting:
 * How many waves come to shore in one minute?
 * How many seabirds you can see?
 
-Remember: Numbers help us understand how many things we have!`
+Remember: Numbers help us understand how many things we have!`,
+        videoUrl: "https://www.youtube.com/watch?v=0VLxWIHRD4E"
       },
       {
         level: 'beginner',
@@ -129,7 +309,8 @@ These are pairs of numbers that add up to 10:
 2. There are 8 birds on a tree. 5 fly away. How many birds are left on the tree?
 3. You pick 6 flowers. Your sister picks 4 flowers. How many flowers do you have together?
 
-Remember: + means add, - means subtract!`
+Remember: + means add, - means subtract!`,
+        videoUrl: "https://www.youtube.com/watch?v=mAvuom42NyY"
       },
       {
         level: 'intermediate',
@@ -190,7 +371,8 @@ If one sugar cane gives 8 cups of juice, how many cups of juice can you get from
 ### Practice at Home:
 Count objects in your house in groups, like:
 * How many eggs are in 3 egg cartons if each has 6 eggs? (3 × 6 = 18)
-* If each hand has 5 fingers, how many fingers do 4 people have? (4 × 10 = 40)`
+* If each hand has 5 fingers, how many fingers do 4 people have? (4 × 10 = 40)`,
+        videoUrl: "https://www.youtube.com/watch?v=gEIBPJ5Et4k"
       },
       {
         level: 'advanced',
@@ -250,7 +432,8 @@ Decimals use a point to separate whole numbers from parts of a whole.
 3. Which is larger: 0.7 or 2/3?
 4. If a recipe calls for 3/4 cup of sugar and you're making half the recipe, how much sugar do you need?
 
-Remember: Fractions and decimals are just different ways to show parts of a whole!`
+Remember: Fractions and decimals are just different ways to show parts of a whole!`,
+        videoUrl: "https://www.youtube.com/watch?v=4PGlp1UEaZ8"
       }
     ]
   },
@@ -1026,3 +1209,4 @@ export const getSubjectIcon = (iconName: string) => {
       return BookOpen;
   }
 };
+
